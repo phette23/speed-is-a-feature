@@ -1,0 +1,72 @@
+/*********************************************
+ * PHETTE23 THEME
+ * @author Eric Phetteplace
+ *********************************************/
+.theme-phette23 body {
+    background: #4c4c4c; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  #4c4c4c 0%, #131313 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#4c4c4c), color-stop(100%,#131313)); /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover,  #4c4c4c 0%,#131313 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover,  #4c4c4c 0%,#131313 100%); /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover,  #4c4c4c 0%,#131313 100%); /* IE10+ */
+    background: radial-gradient(ellipse at center,  #4c4c4c 0%,#131313 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#131313',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+.theme-phette23 .reveal a,
+.theme-phette23 .reveal a:hover,
+.theme-phette23 .reveal .controls a.enabled {
+}
+
+.theme-phette23 .reveal .progress span,
+.theme-phette23 .reveal .roll span:after {
+}
+
+.theme-phette23 .reveal a.image:hover img {
+    border-color: #8b743d;
+}
+
+/* theme helper classes */
+
+.theme-phette23 .reveal .right-align {
+    text-align: right;
+}
+
+.theme-phette23 .reveal .left-align {
+    text-align: left;
+}
+
+.theme-phette23 .reveal .positive-color {
+    color: #46F88D;
+}
+
+.theme-phette23 .reveal .negative-color {
+    color: #F84646;
+}
+
+.centerOnTop {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
+
+/* specific elements */
+
+#textheavy {
+    background-color: white;
+    color: black;
+    padding: 2%;
+    text-align: left;
+    font-size: 14px;
+    line-height: 12px;
+}
+#textheavy p {
+    margin-bottom: -1px;
+}
+
+#bestEvar {
+    margin-top: 16%;
+    color:red;
+    text-shadow: black 2px 2px 2px;
+    font-size: 950%
+}

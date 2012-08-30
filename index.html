@@ -1,22 +1,26 @@
-<!doctype html>  
-<html lang="en">
-	
+<!doctype html>
+<html lang="en" class="theme-phette23">
+
 	<head>
 		<meta charset="utf-8">
-		
-		<title>reveal.js - HTML5 Presentations</title>
 
-		<meta name="description" content="An easy to use CSS 3D slideshow tool for quickly creating good looking HTML presentations.">
-		<meta name="author" content="Hakim El Hattab">
+		<title>Speed is a Feature: Performance on the Mobile Web</title>
+
+		<meta name="description" content="A presentation on the importance of performance to mobile website design with an eye towards helpful techniques & tools.">
+		<meta name="author" content="Eric Phetteplace">
+		<!-- slide deck is reveal.js by Hakim El Hattab
+		see https://github.com/hakimel/reveal.js -->
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		
+
 		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-		
+
 		<link rel="stylesheet" href="css/reset.css">
 		<link rel="stylesheet" href="css/main.css">
 		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="css/my.css">
+
 
 		<script>
 			// If the query includes print-pdf we'll use the fancy print CSS
@@ -27,36 +31,366 @@
 		<script src="lib/js/html5shiv.js"></script>
 		<![endif]-->
 	</head>
-	
+
 	<body>
-		
+
 		<div class="reveal">
 
 			<!-- Used to fade in a background when a specific slide state is reached -->
 			<div class="state-background"></div>
-			
+
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>Reveal.js</h1>
-					<h3 class="inverted">HTML Presentations Made Easy</h3>
+					<h1>Speed is a Feature</h1>
+					<h2>Performance on the Mobile Web</h2>
+					<!-- REM: spinning loading wheel here -->
+					<br>
+					<br>
+					<br>
+					<div class="right-align">
+						<p>
+							Eric Phetteplace (<a href="https://twitter.com/phette23" title="my Twitter">@phette23</a>)
+						</p>
+						<p>
+							Chesapeake College
+						</p>
+					</div>
 				</section>
-				
+
+				<!-- Intro & importance section -->
+				<section>
+					<h2>¡Warning!</h2>
+					<br>
+					<blockquote>
+						Just attackclone the grit repo pushmerge, then rubygem the lymphnode js shawarma module – and presto!
+					</blockquote>
+					<p>
+						- <a href="http://html9responsiveboilerstrapjs.com/">HTML9 Responsive Boilerstrap JS</a>
+					</p>
+				</section>
+
+				<section>
+					<h1>Speed is <em>Important</em></h1>
+					<ul>
+						<li>71% of users expect sites to load as quick or <em>quicker</em> on their phone</li>
+						<li>59% of users expect sites to load in &lt; 3 seconds</li>
+						<li>38% said most common problem is sites are slow to load, while only 15% said formatting made it difficult to use</li>
+					</ul>
+					<!-- compuware/gomez info -->
+				</section>
+
+				<section>
+					<h1>What's More...</h1>
+					<br>
+					<br>
+					<h2 class="negative-color">UX</h2>
+					<br>
+					<h2 class="negative-color">$</h2>
+				</section>
+
+				<section>
+					<h1>It's Simple</h1>
+					<br>
+					<br>
+					<h2 class="positive-color">&#8681; Reduce HTTP Requests</h2>
+					<br>
+					<h2 class="positive-color">&#8681; Send Fewer Bytes</h2>
+				</section>
+
+				<!-- Server configuration section -->
+				<section>
+					<section>
+						<h1>Server Configuration</h1>
+						<p>Far-Future Expires Headers</p>
+						<p>GZIP</p>
+						<!-- Apache icon? Image of horrified person? -->
+					</section>
+					<section>
+						<h1>GZIP</h1>
+						<h2 style="letter-spacing:-6px;">COMPRESSION</h2>
+						<pre><code contenteditable>
+&lt;IfModule mod_deflate.c&gt;
+SetOutputFilter DEFLATE
+# Don’t compress files that have built-in compression
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
+# Dealing with proxy servers
+	&lt;IfModule mod_headers.c&gt;
+	Header append Vary User-Agent
+	&lt;/IfModule&gt;
+&lt;/IfModule&gt;
+						</code></pre>
+					</section>
+					<section>
+						<h1>Use CDNs</h1>
+						<p>Load jQuery via Google AJAX APIs, most commonly-used CDN</p>
+						<aside class="notes">
+							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
+						</aside>
+					</section>
+				</section>
+
+				<!-- Reduce HTTP Request section -->
+				<section>
+					<section>
+						<h1>Reducing HTTP Requests</h1>
+						<aside class="notes">
+							Image of waterfall chart...explain all the pieces. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
+							Also, most mobile browsers can do only 4-6 connections at once per domain. One way to get around this is serving content from multiple domains, but another is just reducing the number of requests needed.
+						</aside>
+					</section>
+					<section>
+						<h1>Concatenate Files</h1>
+						<h3>Serve a single CSS file, a single JS file.</h3>
+						<aside class="notes">
+							Tool to recommend here? HTML5 BP build script.
+						</aside>
+					</section>
+					<section>
+						<h1>Image Sprites</h1>
+						<h3>One Request, Multiple Icons</h3>
+						<p><a href="http://spriteme.org/">SpriteMe.org</a> to make 'em</p>
+						<p><a href="http://www.spritecow.com/">Sprite Cow</a> to get the CSS</p>
+						<aside class="notes">
+							Add Facebook sprite. jQuery Mobile uses sprite for built-in icons. If you find yourself making several sprites or constantly updating them, turn to a tool like Sprite Cow. TODO what's the good sprite-making tool?
+							Icon fonts also a good choice here. Tool that lets you select a subset of icons from a font to deliver the slimmest package.
+						</aside>
+					</section>
+					<section>
+						<h1>Be Antisocial</h1>
+						<p class="small">
+							The mullets of the Internet.
+						</p>
+						<p>Put Twitter sharing badge side-by-side with button-&-link static HTML.</p>
+						<aside class="notes">
+							The Twitter, Google+, & Facebook "share this" buttons can really kill a page, especially if they're at the top blocking everything below from loading. Consider using a simple button with a link to a sharing protocol.
+							//twitter.com/share?url=info.chesapeake.edu/lrc/&via=askLRC&lang=en vs. Twitter badge
+						</aside>
+					</section>
+					<section>
+						<h1>Inline All the Things!</h1>
+						<aside class="notes">
+							You can inline not only CSS & JavaScript but images too via base64-encoded data URIs.
+						</aside>
+					</section>
+					<section>
+						<h1>Slim Content</h1>
+						<p>Deliver what users need & will use. Do they need fifteen images of smiling students when they're trying to find financial aid info?</p>
+						<aside class="notes">
+							What's good for content strategy is good for performance too: deliver what users want, no fluff. Don't distract with unnecessary bells & whistles.
+						</aside>
+					</section>
+				</section>
+
+				<!-- Coding section -->
+				<section>
+					<section>
+						<h1>Code Minification</h1>
+						<aside class="notes">
+							Show mobile site run through HTML Compressor.
+						</aside>
+					</section>
+					<section>
+						<h1>Source Order</h1>
+					</section>
+					<section>
+						<h1>Defer JS Execution</h1>
+						<aside class="notes">
+							Gmail trick where code is commented out & then later parsed & eval'd.
+						</aside>
+					</section>
+					<section>
+						<h1>Don't Be Silly!</h1>
+						<pre><code contenteditable>
+&lt;section class="crazy-menu"&gt;
+&lt;a href="#" onclick="foo('http://www.example.com/one/');return false;"&gt;1&lt;/a&gt;
+&lt;a href="#" onclick="foo('http://www.example.com/two/');return false;"&gt;2&lt;/a&gt;
+&lt;a href="#" onclick="foo('http://www.example.com/three/');return false;"&gt;3&lt;/a&gt;
+...
+&lt;/section&gt;
+						</code></pre>
+						<p class="small">versus</p>
+						<pre><code contenteditable>
+&lt;script&gt;
+$( '.crazy-menu a' ).click( foo );
+&lt;/script&gt;
+						</code></pre>
+						<aside class="notes">
+							Again, following good coding practices can help trim repetitive code. Avoid using a ton of inline styles which could be covered by a few poignant CSS rules. Don't put JavaScript inside of HTML tag attributes. I still see pages, usually generated by loops of server-side code, where dozens upon dozens of elements have onclick handlers stuffed into them as attributes. Even if it's server-side & it's easy to update, you're including the same code over & over when a single line of jQuery is all you need.
+							Also, random aside - putting type="text/javascript" on script tags or type="text/css" on style tags is redundant. No existing browser uses those attributes. JS & CSS are the assumed default for those tags.
+						</aside>
+					</section>
+				</section>
+
+				<!-- Images section -->
+				<section>
+					<section>
+						<h1>Images</h1>
+						<p>OptiPNG & JPEGtrans, Yahoo! Smush.It</p>
+						<aside class="notes">
+							Hopefully you're doing the obvious & including the right size images, not including a huge image & then resizing it down. But images have lots of areas for optimization: metadata & unused color profiles can be stripped out before the file is posted to the web. Savings can range from 20-40%.
+						</aside>
+					</section>
+					<section>
+						<h1>Responsive Images</h1>
+						<p>This is gonna hurt. Funny cat picture.</p>
+						<aside class="notes">
+							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it.
+							srcset
+							picture element
+						</aside>
+					</section>
+					<section>
+						<h1>Don't Use Images</h1>
+						<!-- commence the Hipster Ipsum shit
+							hipsteripsum.me
+						-->
+						<div id="textheavy">
+							<h2 class="fragment centerOnTop" id="bestEvar">Best Website Evar</h2>
+							<p><strong>Art party kale chips</strong> aliquip scenester. Whatever put a bird on it minim keffiyeh chillwave vinyl, letterpress nesciunt carles exercitation butcher freegan. Tofu brooklyn veniam next level small batch ullamco, nulla proident pickled swag fingerstache ex 3 wolf moon. Ad readymade kale chips twee quis DIY. 3 wolf moon exercitation direct trade mustache wayfarers assumenda. Before they sold out echo park photo booth godard. Butcher artisan aliquip, messenger bag <strong>pork belly 8-bit</strong> eiusmod vice incididunt umami <strong>gastropub portland food truck</strong> voluptate. Small batch labore chambray sapiente aesthetic, gastropub ea. Hoodie next level cardigan veniam commodo, carles synth narwhal eu echo park occupy accusamus thundercats. Viral sint swag dreamcatcher occaecat. <strong>Cillum semiotics sapiente</strong>, sint aliqua mcsweeney's enim portland before they sold out assumenda pariatur keffiyeh aesthetic pop-up raw denim. Chambray pitchfork vinyl brooklyn nesciunt, squid est post-ironic sed excepteur <strong>VHS lo-fi banksy dreamcatcher</strong> lomo. Cardigan anim ea portland shoreditch cupidatat. Est fixie qui small batch, gluten-free kogi swag mollit. Consectetur semiotics organic quinoa, sunt duis gentrify do vegan veniam. Nesciunt qui shoreditch occaecat put a bird on it. Jean shorts skateboard DIY, next level salvia portland cosby sweater occupy irure wes anderson dreamcatcher mustache minim. Cred nostrud whatever, et mcsweeney's voluptate locavore sustainable swag. <strong>Mlkshk fixie velit et</strong>. Sint ethical kale chips scenester, excepteur in fap banksy vero ex gluten-free. Butcher seitan labore reprehenderit. VHS consequat officia scenester authentic, twee aliqua. Officia qui delectus keytar, trust fund blog mcsweeney's portland put a bird on it wolf ennui marfa <strong>locavore. Mustache sustainable</strong> terry richardson trust fund laborum, williamsburg aliqua organic. Authentic placeat irony beard, marfa <strong>semiotics american apparel readymade</strong> labore. Brunch gentrify elit mcsweeney's officia salvia. Bespoke kogi sapiente fixie gluten-free aesthetic. Street art aesthetic nulla consequat, keytar commodo fugiat placeat odd future tempor. Cardigan bicycle rights odio enim, odd future letterpress ennui scenester kale chips jean shorts nesciunt typewriter occupy freegan. Whatever consectetur pour-over farm-to-table, lomo marfa deserunt consequat mcsweeney's vero culpa. Butcher ethnic raw denim wayfarers consequat. Terry richardson dreamcatcher chillwave vinyl ullamco duis farm-to-table marfa eiusmod etsy consectetur sriracha, tumblr salvia. Master cleanse <strong>etsy officia vegan</strong> seitan. Pop-up deserunt carles marfa, keffiyeh banh mi lo-fi occupy officia brooklyn. Sed keffiyeh vice, tattooed aesthetic esse letterpress etsy swag skateboard cliche deserunt occaecat thundercats. Incididunt reprehenderit assumenda helvetica, art party trust fund you probably haven't heard of them letterpress cardigan aliquip <strong>yr mumblecore non four loko</strong>. Dolor assumenda jean shorts nihil typewriter scenester, pitchfork messenger bag cred iphone consequat letterpress. Lo-fi proident vinyl, chambray dolor before they sold out post-ironic consequat sustainable. American apparel gluten-free id irony, locavore artisan occupy anim. <strong>8-bit mumblecore kogi chillwave</strong> dreamcatcher sartorial. Small batch selvage etsy raw denim bushwick. <strong>You probably haven't heard of them</strong> semiotics single-origin coffee minim bespoke ad est mumblecore, velit odio cupidatat ex cred.</p>
+						</div>
+					</section>
+					<section>
+						<h1>&lt;img&gt; Alternatives</h1>
+						<br>
+						<style scoped>
+						/*	-- RSS Icon in pure CSS
+							-- via Nicolas Gallagher
+							-- nicolasgallagher.com/demo/pure-css-social-media-icons/
+						 */
+						.rss-icon a {
+							/* I changed block to inline-block
+							and the background color
+							but that's it –phette23 */
+							display:inline-block;
+						    width:32px;
+						    height:32px;
+						    overflow:hidden;
+						    border:1px solid transparent;
+						    line-height:32px;
+						    text-decoration:none;
+						    /* css3 */
+						    text-shadow:0 -1px 0 rgba(0,0,0,0.5);
+						    -moz-border-radius:2.5px;
+						    -webkit-border-radius:2.5px;
+						    border-radius:2.5px; /* standards version last */
+						    position:relative;
+						    width:30px;
+						    padding:0 1px;
+						    border-color:#ea6635;
+						    text-transform:lowercase;
+						    text-indent:-186px;
+						    font-size:32px;
+						    font-weight:bold;
+						    color:#fff;
+						    background:#e36443;
+
+						    /* css3 */
+						    /* NOTE: box-shadow is not currently in any CSS3 module. It may be reappear in a different form altogether */
+						    -moz-box-shadow:0 0 2px rgba(0,0,0,0.4);
+						    -webkit-box-shadow:0 0 2px rgba(0,0,0,0.4);
+						    box-shadow:0 0 2px rgba(0,0,0,0.4); /* standards version last */
+						    /* NOTE: webkit gradient implementation is not as per spec */
+						    background:-webkit-gradient(linear, left top, left bottom, from(#f19242), to(#e36443));
+						    background:-moz-linear-gradient(top, #f19242, #e36443);
+						}
+
+						/* create circle */
+						.rss-icon a:before {
+						    content:"\00a0";
+						    position:absolute;
+						    bottom:5px;
+						    left:5px;
+						    width:6px;
+						    height:6px;
+						    background:#fff;
+
+						    /* css3 */
+						    -moz-border-radius:6px;
+						    -webkit-border-radius:6px;
+						    border-radius:6px; /* standards version last */
+						}
+
+						/* create the two arcs */
+						.rss-icon a:after {
+						    content:"\00a0";
+						    position:absolute;
+						    bottom:5px;
+						    left:5px;
+						    width:11px;
+						    height:11px;
+						    border-style:double;
+						    border-width:12px 12px 0 0;
+						    border-color:#fff;
+
+						    /* css3 */
+						    -moz-border-radius:0 25px 0 0;
+						    -webkit-border-top-right-radius:25px;
+						    border-radius:0 25px 0 0; /* standards version last */
+						}
+						.rss-icon a:hover,
+						.rss-icon a:focus,
+						.rss-icon a:active {
+						    opacity:0.8;
+						    border-color:#000;
+						}
+						</style>
+						<p class="left-align">CSS <span class="rss-icon"><a class="image" href="http://nicolasgallagher.com/demo/pure-css-social-media-icons/">RSS</a></span> - Icon done with border-radius alone</p>
+						<p class="left-align">SVG
+							<a class="image" href="http://thenounproject.com/noun/microscope/#icon-No648" title="Microscope - Noun Project">
+								<svg color="#13DAEC" version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 64.124 100" enable-background="new 0 0 64.124 100" space="preserve">
+									<rect fill="#13DAEC" x="-0.69" y="69.902" transform="matrix(0.866 0.5 -0.5 0.866 38.008 2.8741)" width="28.663" height="4.914"></rect>
+									<path fill="#13DAEC" d="M50.154,89.814C57.331,83.048,61.87,73.53,61.87,62.916c0-13.087-6.868-24.882-17.554-31.511l11.966-20.722l-1.881-1.09,l2.96-5.125L49.624,0l-2.96,5.121l-1.985-1.142L15.254,54.953l2.575,1.487l-3.649,6.318l6.456,3.725l3.65-6.311l2.568,1.485,l12.372-21.436c7.596,4.833,12.455,13.305,12.455,22.694c0,14.835-12.07,26.898-26.906,26.898c-9.927,0-21.684,0-21.684,0V100,h61.033V89.814C64.124,89.814,55.091,89.814,50.154,89.814z"></path>
+								</svg>
+							</a> - IE9+
+						</p>
+						<p class="left-align">Icon Fonts - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
+						<p class="left-align">Unicode Characters<a href="http://copypastecharacter.com/" title="Copy-Paste Character">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
+						<aside class="notes">
+							All of these are infinitely scalable. Not only better for responsive designs but also easier to maintain (no versioning issues).
+							What use to be images can be replaced with advanced CSS, SVG, Icon Fonts (IcoMoon lets you build a custom font with just the characters you need), or Unicode Characters.
+							For Unicode, note mobilewebbestpractices.com which uses characters to keep a playing card theme without requesting any images.
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<h1>¿Questions?</h1>
+					<br>
+					<h2>Links</h2>
+					<p>The presentation: TBD.net</p>
+					<p>The slide deck: <a href="https://github.com/hakimel/reveal.js" title="HTML presentation framework">reveal.js</a> by Hakim El Hattab</p>
+					<p>Resources: <a href="https://www.diigo.com/user/phette23/mobileperf" title="curated links on mobile performance">diigo.com/user/phette23/mobileperf</a></p>
+				</section>
+
+				<!-- other topics to cover
+				Blocking - scripts at the bottom
+				Section just on caching?:
+					Application Cache (is a douchebag)
+					LocalStorage
+					Caching headers are less effective on mobile because of small cache sizes
+					see slide #47: slideshare.net/patrickmeenan/velocity-2012-taming-the-mobile-beast
+				Converting click events to touch saves time
+				AJAX Include (Filament Group blog post)
+				Testing Tools: MobiTest, WebPage Test, Browser Dev Tools, Adobe Shadow, Chrome Remote Debugging, Mobile Safari remote debugging coming in iOS 6
+				Google Analytics Site Speed
+				navigator.connection
+				window.performance.timing
+				-->
+
 				<section>
 					<h2>Heads Up</h2>
 					<p>
-						reveal.js is an easy to use, HTML based, presentation tool. You'll need a modern browser with 
+						reveal.js is an easy to use, HTML based, presentation tool. You'll need a modern browser with
 						support for CSS 3D transforms to see it in its full glory.
-					</p>
-					<p>
-						<i><small>- <a href="http://hakim.se">Hakim El Hattab</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small></i>
 					</p>
 
 					<aside class="notes">
 						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you run the speaker notes server.
 					</aside>
 				</section>
-				
+
 				<!-- Example of nested vertical slides -->
 				<section>
 					<section>
@@ -76,16 +410,11 @@
 					<section>
 						<h2>Basement Level 2</h2>
 						<p>Cornify</p>
+						<!--
 						<a class="test" href="http://cornify.com">
 							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
 						</a>
-					</section>
-					<section>
-						<h2>Basement Level 3</h2>
-						<p>That's it, time to go back up.</p>
-						<a href="#/2" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-						</a>
+						-->
 					</section>
 				</section>
 
@@ -94,46 +423,6 @@
 					<p>
 						Press <strong>ESC</strong> to enter the slide overview!
 					</p>
-				</section>
-
-				<section>
-					<h2>Works in Mobile Safari</h2>
-					<p>
-						Try it out! You can swipe through the slides pinch your way to the overview.
-					</p>
-				</section>
-
-				<section>
-					<h2>Marvelous Unordered List</h2>
-					<ul>
-						<li>No order here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-						<li>Or here</li>
-					</ul>
-				</section>
-				
-				<section>
-					<h2>Fantastic Ordered List</h2>
-					<ol>
-						<li>One is smaller than...</li>
-						<li>Two is smaller than...</li>
-						<li>Three!</li>
-					</ol>
-				</section>
-
-				<section data-markdown>
-					## Markdown support
-					
-					For those of you who like that sort of thing. Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-
-					<pre><code contenteditable style="margin-top: 20px;">&lt;section data-markdown&gt;
-  ## Markdown support
-
-  For those of you who like that sort of thing. 
-  Instructions and a bit more info available [here](https://github.com/hakimel/reveal.js#markdown).
-&lt;/section&gt;
-					</code></pre>
 				</section>
 
 				<section>
@@ -158,19 +447,25 @@
 							apply broader style changes, like switching the background.
 						</p>
 						<a href="#/7/1" class="image">
+							<!--
 							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
+							-->
 						</a>
 					</section>
 					<section data-state="blackout">
 						<h2>"blackout"</h2>
 						<a href="#/7/2" class="image">
+							<!--
 							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
+							-->
 						</a>
 					</section>
 					<section data-state="soothe">
 						<h2>"soothe"</h2>
 						<a href="#/7/0" class="image">
+							<!--
 							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
+							-->
 						</a>
 					</section>
 				</section>
@@ -193,17 +488,17 @@
 						The nice thing about standards is that there are so many to choose from</q> and block:
 					</p>
 					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						For years there has been a theory that millions of monkeys typing at random on millions of typewriters would 
+						For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
 						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.
 					</blockquote>
 				</section>
-				
+
 				<section>
 					<h2>Pretty Code</h2>
 					<pre><code contenteditable>
 function linkify( selector ) {
   if( supports3DTransforms ) {
-    
+
     var nodes = document.querySelectorAll( selector );
 
     for( var i = 0, len = nodes.length; i < len; i++ ) {
@@ -218,14 +513,6 @@ function linkify( selector ) {
 					</code></pre>
 					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
 				</section>
-				
-				<section>
-					<h2>Intergalactic Interconnections</h2>
-					<p>
-						You can link between slides internally,
-						<a href="#/2/3">like this</a>.
-					</p>
-				</section>
 
 				<section>
 					<h2>Fragmented Views</h2>
@@ -237,33 +524,24 @@ function linkify( selector ) {
 						<li class="fragment"><strong>fragments</strong></li>
 					</ol>
 				</section>
-				
+
 				<section>
 					<h2>Spectacular image!</h2>
 					<a class="image" href="http://hakim.se/experiments/html5/breakdom/" target="_blank">
+						<!--
 						<img width="320" height="412" src="https://s3.amazonaws.com/hakim-static/reveal-js/breakdom.png" alt="BreakDOM game screenshot">
+						-->
 					</a>
 				</section>
-				
+
 				<section>
 					<h2>Export to PDF</h2>
 					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>
+					<!--
 					<iframe src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
+					-->
 				</section>
-				
-				<section>
-					<h2>Stellar Links</h2>
-					<ul>
-						<li><a href="https://github.com/hakimel/reveal.js">Source code on github</a></li>
-						<li><a href="http://hakim.se/projects/reveal-js">Read more on my site</a></li>
-						<li><a href="http://twitter.com/hakimel">Follow me on Twitter</a></li>
-					</ul>
-				</section>
-				
-				<section>
-					<h1>THE END</h1>
-					<h3 class="inverted">BY Hakim El Hattab / hakim.se</h3>
-				</section>
+
 			</div>
 
 			<!-- The navigational controls UI -->
@@ -276,7 +554,7 @@ function linkify( selector ) {
 
 			<!-- Presentation progress bar -->
 			<div class="progress"><span></span></div>
-			
+
 		</div>
 
 		<script src="lib/js/head.min.js"></script>
@@ -300,14 +578,14 @@ function linkify( selector ) {
 					controls: true,
 					progress: true,
 					history: true,
-					
+
 					theme: Reveal.getQueryHash().theme || 'default', // default/neon/beige
 					transition: Reveal.getQueryHash().transition || 'default' // default/cube/page/concave/linear(2d)
 				});
 
 				// Load highlight.js for syntax highlighting of code samples
-				head.js( 'lib/js/highlight.js', function() { 
-					hljs.initHighlightingOnLoad(); 
+				head.js( 'lib/js/highlight.js', function() {
+					hljs.initHighlightingOnLoad();
 				} );
 
 			} );
@@ -337,7 +615,7 @@ function linkify( selector ) {
 
 			// Load the scripts and, when completed, initialize reveal.js
 			head.js.apply( null, scripts );
-			
+
 		</script>
 
 	</body>
