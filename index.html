@@ -48,9 +48,9 @@
 					<br>
 					<br>
 					<br>
-					<div class="right-align">
+					<div class="right-align positive-color">
 						<p>
-							Eric Phetteplace (<a href="https://twitter.com/phette23" title="my Twitter">@phette23</a>)
+							Eric Phetteplace <a href="https://twitter.com/phette23" title="my Twitter">@phette23</a>
 						</p>
 						<p>
 							Chesapeake College
@@ -68,6 +68,9 @@
 					<p>
 						- <a href="http://html9responsiveboilerstrapjs.com/">HTML9 Responsive Boilerstrap JS</a>
 					</p>
+					<aside class="notes">
+						We'll be jumping around quite a bit, talking about server configuration, good ol' source code, tools, testing, & more. Some of this will probably sound like gibberish & there will be some messy code pasted into slides. The presentation is all online so don't feel obliged to write it all down. If something doesn't make sense, I've linked up a lot of articles that should help explain it later.
+					</aside>
 				</section>
 
 				<section>
@@ -87,6 +90,10 @@
 					<h2 class="negative-color">UX</h2>
 					<br>
 					<h2 class="negative-color">$</h2>
+					<aside class="notes">
+						There's two obvious concerns besides user expectations. A quick, responsive page is good for usability. Even if users don't give up, they're going to be frustrated if they have to wait for your page to load.
+						But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
+					</aside>
 				</section>
 
 				<section>
@@ -96,6 +103,20 @@
 					<h2 class="positive-color">&#8681; Reduce HTTP Requests</h2>
 					<br>
 					<h2 class="positive-color">&#8681; Send Fewer Bytes</h2>
+					<aside class="notes">
+						Luckily, performance isn't rocket science. There's basically two things you do to improve a page: send fewer HTTP requests & make those requests smaller file sizes. And almost all of the advice that applies to desktops applies to mobile, too. I'm going to touch on a few mobile-specific techniques but for the most part a fast page is a fast page.
+					</aside>
+				</section>
+
+				<section data-state="soothe">
+					<small>
+						<h1>Honey, I Shrunk the<br>
+							Page Load Time!</h1>
+					</small>
+					<img src="/img/histc1.jpeg" height="90%" alt="Rick Moranis inspects a spoon with a magnifying glass" title="Look how tiny these bytes are!">
+					<aside class="notes">
+						With those two steps in mind, our theme today will be Rick Moranis-inspired. We're going to some hi-tech science to shrink everything: our images, our code, & our HTTP responses.
+					</aside>
 				</section>
 
 				<!-- Server configuration section -->
@@ -123,10 +144,37 @@ SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
 						</code></pre>
 					</section>
 					<section>
+						<h2>On IIS?</h2>
+						<p>See this <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7">MDSN blog post</a>.</p>
+						<small>
+							<pre><code contenteditable>
+&lt;system.webServer&gt;
+  &lt;httpCompression directory="%SystemDrive%\inetpub\temp\IIS Temporary Compressed Files"&gt;
+    &lt;scheme name="gzip" dll="%Windir%\system32\inetsrv\gzip.dll"/&gt;
+    &lt;dynamicTypes&gt;
+      &lt;add mimeType="text/*" enabled="true"/&gt;
+      &lt;add mimeType="message/*" enabled="true"/&gt;
+      &lt;add mimeType="application/javascript" enabled="true"/&gt;
+      &lt;add mimeType="*/*" enabled="false"/&gt;
+    &lt;/dynamicTypes&gt;
+    &lt;staticTypes&gt;
+      &lt;add mimeType="text/*" enabled="true"/&gt;
+      &lt;add mimeType="message/*" enabled="true"/&gt;
+      &lt;add mimeType="application/javascript" enabled="true"/&gt;
+      &lt;add mimeType="*/*" enabled="false"/&gt;
+    &lt;/staticTypes&gt;
+  &lt;/httpCompression&gt;
+  &lt;urlCompression doStaticCompression="true" doDynamicCompression="true"/&gt;
+&lt;/system.webServer&gt;
+							</code></pre>
+						</small>
+					</section>
+					<section>
 						<h1>Use CDNs</h1>
 						<p>Load jQuery via Google AJAX APIs, most commonly-used CDN</p>
 						<aside class="notes">
 							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
+							Also - never link to the jQuery latest branch. It doesn't cache, because it's constantly updated, & changes could always break something. Linking to a bleeding-edge version, even a stable one, is insane.
 						</aside>
 					</section>
 				</section>
@@ -149,23 +197,29 @@ SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
 					</section>
 					<section>
 						<h1>Image Sprites</h1>
-						<h3>One Request, Multiple Icons</h3>
-						<p><a href="http://spriteme.org/">SpriteMe.org</a> to make 'em</p>
-						<p><a href="http://www.spritecow.com/">Sprite Cow</a> to get the CSS</p>
+						<h3>1 HTTP Request, Many Icons</h3>
+						<p><a href="http://spriteme.org/">SpriteMe.org</a> makes this easy.</p>
 						<aside class="notes">
-							Add Facebook sprite. jQuery Mobile uses sprite for built-in icons. If you find yourself making several sprites or constantly updating them, turn to a tool like Sprite Cow. TODO what's the good sprite-making tool?
-							Icon fonts also a good choice here. Tool that lets you select a subset of icons from a font to deliver the slimmest package.
+							jQuery Mobile uses sprite for built-in icons. If you find yourself making several sprites or constantly updating them, turn to a tool like SpriteMe which does a great job.
+							Icon fonts also a good choice here, more on them later.
 						</aside>
+						<img src="img/fbsprite.png" class="fragment nobord" alt="Facebook's sprite" title="Facebook's sprite">
 					</section>
 					<section>
 						<h1>Be Antisocial</h1>
-						<p class="small">
-							The mullets of the Internet.
+						<p>
+							<em>Sharing buttons are the mullets of the Internet.™</em>
 						</p>
-						<p>Put Twitter sharing badge side-by-side with button-&-link static HTML.</p>
+						<div>
+							<a href="https://twitter.com/share" class="twitter-share-button" data-via="phette23" data-size="large" data-hashtags="mobileperf" data-dnt="true">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+						</div>
+						<p>Versus</p>
+						<div>
+							<a class="btn image" href="//twitter.com/share?url=http://phette.net&via=phette23&lang=en&hashtags=mobileperf" id="tweet-link" title="Tweet this URL">Tweet</a>
+						</div>
 						<aside class="notes">
 							The Twitter, Google+, & Facebook "share this" buttons can really kill a page, especially if they're at the top blocking everything below from loading. Consider using a simple button with a link to a sharing protocol.
-							//twitter.com/share?url=info.chesapeake.edu/lrc/&via=askLRC&lang=en vs. Twitter badge
 						</aside>
 					</section>
 					<section>
@@ -336,7 +390,7 @@ $( '.crazy-menu a' ).click( foo );
 						    border-color:#000;
 						}
 						</style>
-						<p class="left-align">CSS <span class="rss-icon"><a class="image" href="http://nicolasgallagher.com/demo/pure-css-social-media-icons/">RSS</a></span> - Icon done with border-radius alone</p>
+						<p class="left-align">CSS <span class="rss-icon"><a class="image" href="http://nicolasgallagher.com/demo/pure-css-social-media-icons/">RSS</a></span> - border-radius & pseudo-elements</p>
 						<p class="left-align">SVG
 							<a class="image" href="http://thenounproject.com/noun/microscope/#icon-No648" title="Microscope - Noun Project">
 								<svg color="#13DAEC" version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 64.124 100" enable-background="new 0 0 64.124 100" space="preserve">
@@ -389,40 +443,6 @@ $( '.crazy-menu a' ).click( foo );
 					<aside class="notes">
 						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you run the speaker notes server.
 					</aside>
-				</section>
-
-				<!-- Example of nested vertical slides -->
-				<section>
-					<section>
-						<h2>Vertical Slides</h2>
-						<p>
-							Slides can be nested inside of other slides,
-							try pressing <a href="#/2/1">down</a>.
-						</p>
-						<a href="#/2/1" class="image">
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-						</a>
-					</section>
-					<section>
-						<h2>Basement Level 1</h2>
-						<p>Press down or up to navigate.</p>
-					</section>
-					<section>
-						<h2>Basement Level 2</h2>
-						<p>Cornify</p>
-						<!--
-						<a class="test" href="http://cornify.com">
-							<img width="280" height="326" src="https://s3.amazonaws.com/hakim-static/reveal-js/cornify.gif" alt="Unicorn">
-						</a>
-						-->
-					</section>
-				</section>
-
-				<section>
-					<h2>Holistic Overview</h2>
-					<p>
-						Press <strong>ESC</strong> to enter the slide overview!
-					</p>
 				</section>
 
 				<section>
@@ -575,8 +595,8 @@ function linkify( selector ) {
 				// Full list of configuration options available here:
 				// https://github.com/hakimel/reveal.js#configuration
 				Reveal.initialize({
-					controls: true,
-					progress: true,
+					mouseWheel: false,
+					progress: true, // REM: turn to false before prez
 					history: true,
 
 					theme: Reveal.getQueryHash().theme || 'default', // default/neon/beige
