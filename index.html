@@ -69,31 +69,51 @@
 						- <a href="http://html9responsiveboilerstrapjs.com/">HTML9 Responsive Boilerstrap JS</a>
 					</p>
 					<aside class="notes">
-						We'll be jumping around quite a bit, talking about server configuration, good ol' source code, tools, testing, & more. Some of this will probably sound like gibberish & there will be some messy code pasted into slides. The presentation is all online so don't feel obliged to write it all down. If something doesn't make sense, I've linked up a lot of articles that should help explain it later.
+						We'll be jumping around quite a bit, talking about server configuration, good ol' source code, tools, testing, & more. Some of this will probably sound like gibberish & there will be some messy code pasted into slides. The presentation is all online so don't feel obliged to take notes. If something doesn't make sense, I've linked up a lot of articles that should help explain it later.
 					</aside>
 				</section>
 
 				<section>
-					<h1>Speed is <em>Important</em></h1>
-					<ul>
-						<li>71% of users expect sites to load as quick or <em>quicker</em> on their phone</li>
-						<li>59% of users expect sites to load in &lt; 3 seconds</li>
-						<li>38% said most common problem is sites are slow to load, while only 15% said formatting made it difficult to use</li>
-					</ul>
-					<!-- compuware/gomez info -->
-				</section>
-
-				<section>
-					<h1>What's More...</h1>
-					<br>
-					<br>
-					<h2 class="negative-color">UX</h2>
-					<br>
-					<h2 class="negative-color">$</h2>
-					<aside class="notes">
-						There's two obvious concerns besides user expectations. A quick, responsive page is good for usability. Even if users don't give up, they're going to be frustrated if they have to wait for your page to load.
-						But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
-					</aside>
+					<section>
+						<h1>Speed is <em>Important</em></h1>
+						<!-- rotating pin wheel -->
+						<ul>
+							<li>71% of users expect sites to load as quick or <em>quicker</em> on their phone</li>
+							<li>59% of users expect sites to load in &lt; 3 seconds</li>
+							<li>38% said most common problem is sites are slow to load, while only 15% said formatting made it difficult to use</li>
+						</ul>
+						<aside class="notes">
+							When you set out to create or improve a web site or web application, performance is rarely at the forefront of your mind. We think about design, content, functionality first. While those are all valuable, in a way they all hinge on performance. No one uses a site that doesn't load quick enough; they abandon it.
+							On a daily basis, I encounter the spinning wheel of despair. Most often, it's via Twitter's iOS app: I click an interesting link, wait for five seconds, then give up. I don't try to return to the site to track down the article later; there's plenty more interesting content out there. As a web designer or content producer, if your site doesn't load is a reasonable amount of time you're silencing yourself.
+						</aside>
+					</section>
+					<section>
+						<h1>Expectations</h1>
+						<p data-replace="phoneExpectations.html"></p>
+						<aside class="notes">
+							71% of users expect sites to load as quick or _even quicker_ on their smart phones, despite the fact that most phones have less processing power, smaller caches, & frequently operate on weaker connections than their personal computers. What's worse: this trend is worsening! Perhaps because phones seem so new & hi-tech, people expect them to operate faster. & in parallel surveys more people expected them to load faster in 2011 than 2009.
+						</aside>
+					</section>
+					<section>
+						<h1>Priorities?</h1>
+						<p data-replace="problems.html"></p>
+						<aside class="notes">
+							You've probably heard a lot about responsive design at this conference, and other web conferences, and on everywhere on the web. With good reason: it's an important paradigm-shift that makes the web portable across any arbitrary screen. But the Gomez survey indicates that site formatting is actually far less of a problem than speed: "slow to load" leapfrogged site crashes to be users top issue in 2011.
+							So when you're creating a responsive website consider this: it's not really responsive if a mobile device on a poor connection can't reasonably be expected to download it all in time. A site that resizes everything to fit a mobile screen is only doing half of the work because you also have to resize the amount of data you're delivering.
+						</aside>
+					</section>
+					<section>
+						<h1>What's More...</h1>
+						<br>
+						<br>
+						<h2 class="negative-color">UX</h2>
+						<br>
+						<h2 class="negative-color">$</h2>
+						<aside class="notes">
+							There's two obvious concerns besides user expectations. A quick, responsive page is good for usability. Even if users don't give up, they're going to be frustrated if they have to wait for your page to load.
+							But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
+						</aside>
+					</section>
 				</section>
 
 				<section>
@@ -113,7 +133,7 @@
 						<h1>Honey, I Shrunk the<br>
 							Page Load Time!</h1>
 					</small>
-					<img src="/img/histc1.jpeg" height="90%" alt="Rick Moranis inspects a spoon with a magnifying glass" title="Look how tiny these bytes are!">
+					<img src="img/histc1.jpg" height="90%" alt="Rick Moranis inspects a spoon with a magnifying glass" title="Look how tiny these bytes are!">
 					<aside class="notes">
 						With those two steps in mind, our theme today will be Rick Moranis-inspired. We're going to some hi-tech science to shrink everything: our images, our code, & our HTTP responses.
 					</aside>
@@ -123,29 +143,38 @@
 				<section>
 					<section>
 						<h1>Server Configuration</h1>
-						<p>Far-Future Expires Headers</p>
-						<p>GZIP</p>
+						<ol>
+							<li>GZIP</li>
+							<li>Expires Headers</li>
+							<li>Content Delivery Networks</li>
+						</ol>
 						<!-- Apache icon? Image of horrified person? -->
 					</section>
 					<section>
 						<h1>GZIP</h1>
-						<h2 style="letter-spacing:-6px;">COMPRESSION</h2>
+						<h3 style="letter-spacing:-6px;">COMPRESSION</h3>
 						<pre><code contenteditable>
 &lt;IfModule mod_deflate.c&gt;
-SetOutputFilter DEFLATE
-# Don’t compress files that have built-in compression
-SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
-SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
-# Dealing with proxy servers
-	&lt;IfModule mod_headers.c&gt;
-	Header append Vary User-Agent
-	&lt;/IfModule&gt;
+  &lt;IfModule mod_setenvif.c&gt;
+    &lt;IfModule mod_headers.c&gt;
+    SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+    RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+    &lt;/IfModule&gt;
+  &lt;/IfModule&gt;
+  &lt;IfModule mod_filter.c&gt;
+    AddOutputFilterByType DEFLATE application/javascript \
+                                  text/css \
+                                  text/html
+  &lt;/IfModule&gt;
 &lt;/IfModule&gt;
 						</code></pre>
+						<aside class="notes">
+							This is the .htaccess snippet for Apache taken from the HTML5 Boilerplate project. Don't ask me how it works, but you can see that it essentially says "if you have the deflate module, then deflate these MIME types before sending." You can compress any textual content so I've listed the big three here. Don't compress images! They're already compressed so you're just wasting server CPU.
+						</aside>
 					</section>
 					<section>
 						<h2>On IIS?</h2>
-						<p>See this <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7">MDSN blog post</a>.</p>
+						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7">this MDSN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate">H5BP</a> again.</p>
 						<small>
 							<pre><code contenteditable>
 &lt;system.webServer&gt;
@@ -168,10 +197,39 @@ SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
 &lt;/system.webServer&gt;
 							</code></pre>
 						</small>
+						<aside class="notes">
+							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is a huge win.
+						</aside>
+					</section>
+					<section>
+						<h1>Caching</h1>
+						<pre><code contenteditable>
+# These are pretty far-future expires headers.
+# They assume versioning control w/ filename-based cache busting
+&lt;IfModule mod_expires.c&gt;
+  ExpiresActive on
+# Perhaps better to whitelist expires rules? Perhaps.
+  ExpiresDefault                          "access plus 1 month"
+# Your document html
+  ExpiresByType text/html                 "access plus 0 seconds"
+# Media: images, video, audio
+  ExpiresByType image/png                 "access plus 1 month"
+  ExpiresByType image/jpeg                "access plus 1 month"
+# CSS & JavaScript
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+&lt;/IfModule&gt;
+						</code></pre>
+						<aside class="notes">
+							Excerpt of HTML5 Boilerplate .htaccess:
+							github.com/h5bp/html5-boilerplate/blob/master/.htaccess
+						</aside>
 					</section>
 					<section>
 						<h1>Use CDNs</h1>
-						<p>Load jQuery via Google AJAX APIs, most commonly-used CDN</p>
+						<pre><code contenteditable>
+&lt;script src="http://<strong>ajax.googleapis.com/ajax/libs/</strong>jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;
+						</code></pre>
 						<aside class="notes">
 							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
 							Also - never link to the jQuery latest branch. It doesn't cache, because it's constantly updated, & changes could always break something. Linking to a bleeding-edge version, even a stable one, is insane.
@@ -190,8 +248,9 @@ SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
 					</section>
 					<section>
 						<h1>Concatenate Files</h1>
-						<h3>Serve a single CSS file, a single JS file.</h3>
+						<h3>Goal: a single CSS file, a single JS file.</h3>
 						<aside class="notes">
+							TODO: build script run-through. Magic unicorn image.
 							Tool to recommend here? HTML5 BP build script.
 						</aside>
 					</section>
@@ -208,31 +267,140 @@ SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
 					<section>
 						<h1>Be Antisocial</h1>
 						<p>
-							<em>Sharing buttons are the mullets of the Internet.™</em>
+							<em>Sharing buttons are the lawn gnomes of the Internet.™</em>
 						</p>
+						<br>
 						<div>
 							<a href="https://twitter.com/share" class="twitter-share-button" data-via="phette23" data-size="large" data-hashtags="mobileperf" data-dnt="true">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+							<p class="fragment negative-color">7 requests, 48.72kbs, ≈550-700ms onload</p>
 						</div>
 						<p>Versus</p>
+						<br>
 						<div>
-							<a class="btn image" href="//twitter.com/share?url=http://phette.net&via=phette23&lang=en&hashtags=mobileperf" id="tweet-link" title="Tweet this URL">Tweet</a>
+							<style scoped>
+								.btn {
+							      display: inline-block;
+							      *display: inline;
+							      padding: 2px 7px;
+							      margin-bottom: 0;
+							      *margin-left: .3em;
+							      font-size: 14px;
+							      line-height: 20px;
+							      *line-height: 20px;
+							      color: #333333;
+							      text-align: center;
+							      text-decoration: none;
+							      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+							      vertical-align: middle;
+							      cursor: pointer;
+							      background-color: #f5f5f5;
+							      *background-color: #e6e6e6;
+							      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+							      background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+							      background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+							      background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+							      background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+							      background-repeat: repeat-x;
+							      border: 1px solid #bbbbbb;
+							      *border: 0;
+							      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+							      border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+							      border-bottom-color: #a2a2a2;
+							      -webkit-border-radius: 4px;
+							         -moz-border-radius: 4px;
+							              border-radius: 4px;
+							      filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+							      filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+							      *zoom: 1;
+							      -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+							         -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+							              box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+							    }
+							    .btn:hover,
+							    .btn:active,
+							    .btn.active {
+							      color: #333333;
+							      background-color: #e6e6e6;
+							      *background-color: #d9d9d9;
+							    }
+							    .btn:active,
+							    .btn.active {
+							      background-color: #cccccc \9;
+							    }
+							    .btn:first-child {
+							      *margin-left: 0;
+							    }
+							    .btn:hover {
+							      color: #333333;
+							      text-decoration: none;
+							      background-color: #e6e6e6;
+							      *background-color: #d9d9d9;
+							      /* Buttons in IE7 don't get borders, so darken on hover */
+							      background-position: 0 -15px;
+							      -webkit-transition: background-position 0.1s linear;
+							         -moz-transition: background-position 0.1s linear;
+							           -o-transition: background-position 0.1s linear;
+							              transition: background-position 0.1s linear;
+							    }
+							    .btn:focus {
+							      outline: thin dotted #333;
+							      outline: 5px auto -webkit-focus-ring-color;
+							      outline-offset: -2px;
+							    }
+							    .btn.active,
+							    .btn:active {
+							      background-color: #e6e6e6;
+							      background-color: #d9d9d9 \9;
+							      background-image: none;
+							      outline: 0;
+							      -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+							         -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+							              box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+							    }
+							    .btn {
+							      border-color: #c5c5c5;
+							      border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+							    }
+							    .tweet i {
+							      display: inline-block;
+							      position: relative;
+							      top: 4px;
+							      width: 21px;
+							      height: 16px;
+							      background: url(img/tweet.png) 0 0 no-repeat;
+							    }
+							    .tweet {
+							      font: 13/26px 'Helvetica Neue', Arial, sans-serif;
+							      font-weight: bold;
+							    }
+							</style>
+        					<a class="btn tweet image" href="//twitter.com/share?url=http://phette.net&via=phette23&lang=en&hashtags=mobileperf" id="tweet-link" title="Tweet this URL"><i></i> Tweet</a>
+							<p class="fragment positive-color">2 requests, 5.84kbs, ≈250-350ms onload</p>
 						</div>
 						<aside class="notes">
 							The Twitter, Google+, & Facebook "share this" buttons can really kill a page, especially if they're at the top blocking everything below from loading. Consider using a simple button with a link to a sharing protocol.
 						</aside>
 					</section>
 					<section>
-						<h1>Inline All the Things!</h1>
+						<h1>Inline Everything</h1>
+						<p data-replace="inline.html"></p>
+						<div class="fragment">
+							<pre><code contenteditable>
+.inline-img { background: url(data:image/jpeg;base64,wTfD0esALlth1Sgi1313ERishM34n...); }
+							</code></pre>
+						</div>
 						<aside class="notes">
-							You can inline not only CSS & JavaScript but images too via base64-encoded data URIs.
+							You can inline not only CSS & JavaScript, in style & script tags, but images too via base64-encoded data URIs. This actually may increase the file size a bit, but that's partially offset by Gzip compression. Ideally you'd do this using CSS background images so the image is cached along with the CSS file. This is a mobile-specific tradeoff: on mobile, requests are even more expensive than usual, so while base64 encoding isn't always a win on desktop it can be on mobile.
+							Many performance improvements are tradeoffs like this: while we save a single request, we increase file size or decrease maintainability. You have decide what makes sense for your project.
 						</aside>
 					</section>
 					<section>
 						<h1>Slim Content</h1>
-						<p>Deliver what users need & will use. Do they need fifteen images of smiling students when they're trying to find financial aid info?</p>
+						<p>Deliver what users need & will use.</p>
+						<p data-replace="xkcd.html"></p>
 						<aside class="notes">
-							What's good for content strategy is good for performance too: deliver what users want, no fluff. Don't distract with unnecessary bells & whistles.
+							What's good for content strategy is good for performance too: deliver what users want, no fluff. Don't distract with unnecessary bells & whistles. Do they need fifteen images of smiling students when they're trying to find financial aid info?
 						</aside>
 					</section>
 				</section>
@@ -247,13 +415,57 @@ SetEnvIfNoCase Request_URI \.(?:exe|t?gz|zip|bz2|sit|rar)$ no-gzip dont-vary
 					</section>
 					<section>
 						<h1>Source Order</h1>
+						<p>Scripts at the bottom, please.</p>
+						<pre><code contenteditable>
+&lt;!doctype html public "¿"&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;Teh Awesome Sauce&lt;/title&gt;
+		&lt;link rel="stylesheet" href="css/style.css"&gt;
+		&lt;script src="js/logic.js"&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;h1&gt;Teh Awesome Sauce&lt;/h1&gt;
+		&lt;p&gt;Lorem ipsum dolor sit amet...&lt;/p&gt;
+		...
+	&lt;/body&gt;
+&lt;/html&gt;
+						</code></pre>
 					</section>
 					<section>
 						<h1>Defer JS Execution</h1>
+						<pre><code contenteditable>
+&lt;script id="lazy"&gt;/*
+alert("Hello, edUI!");
+*/&lt;/script&gt;
+&lt;script&gt;
+function lazyLoad() {
+	var lazyEl = document.getElementById('lazy');
+	var lazyElBody = lazyEl.innerHTML;
+	var len = lazyElBody.length;
+	var jsCode = lazyElBody.substring(2, len - 2);
+	eval(jsCode);
+}
+&lt;/script&gt;
+						</code></pre>
+						<button onclick="lazyLoad();">Lazy Load It!</button>
+						<script id="lazy">/*
+						alert("Hello, edUI!");
+						*/</script>
+						<script>
+							function lazyLoad() {
+								var lazyEl = document.getElementById('lazy');
+								var lazyElBody = lazyEl.innerHTML;
+								var len = lazyElBody.length;
+								var jsCode = lazyElBody.substring(2, len - 2);
+								eval(jsCode);
+							}
+						</script>
 						<aside class="notes">
-							Gmail trick where code is commented out & then later parsed & eval'd.
+							A trick from Gmail where code is commented out & then later parsed & eval'd.
 						</aside>
 					</section>
+					<!-- possible ditch this section -->
 					<section>
 						<h1>Don't Be Silly!</h1>
 						<pre><code contenteditable>
@@ -608,6 +820,11 @@ function linkify( selector ) {
 					hljs.initHighlightingOnLoad();
 				} );
 
+				// If jQuery exists then we need to run AJAX Include
+				if ( window.jQuery ) {
+					$( '[data-append],[data-replace],[data-after],[data-before]' ).ajaxInclude();
+				}
+
 			} );
 
 			// Scripts that should be loaded before initializing
@@ -631,6 +848,12 @@ function linkify( selector ) {
 			if( window.location.host === 'localhost:1947' ) {
 				scripts.push( 'socket.io/socket.io.js' );
 				scripts.push( 'plugin/speakernotes/client.js' );
+			}
+
+			if ( document.querySelector( '[data-append],[data-replace],[data-after],[data-before]' ) ) {
+				// Load jQuery first & then AJAX Include
+				scripts.push( 'lib/js/jquery-1.7.2.min.js');
+				scripts.push( 'lib/js/ajaxInclude.min.js');
 			}
 
 			// Load the scripts and, when completed, initialize reveal.js
