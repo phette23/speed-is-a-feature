@@ -44,7 +44,6 @@
 				<section>
 					<h1>Speed is a Feature</h1>
 					<h2>Performance on the Mobile Web</h2>
-					<!-- REM: spinning loading wheel here -->
 					<br>
 					<br>
 					<br>
@@ -76,12 +75,9 @@
 				<section>
 					<section>
 						<h1>Speed is <em>Important</em></h1>
-						<!-- rotating pin wheel -->
-						<ul>
-							<li>71% of users expect sites to load as quick or <em>quicker</em> on their phone</li>
-							<li>59% of users expect sites to load in &lt; 3 seconds</li>
-							<li>38% said most common problem is sites are slow to load, while only 15% said formatting made it difficult to use</li>
-						</ul>
+						<img src="img/loadingBar.gif" alt="spinning loading wheel" class="nobord" width="200" height="266.67">
+						<img src="img/loadingBar.gif" alt="spinning loading wheel" class="nobord" width="200" height="266.67">
+						<img src="img/loadingBar.gif" alt="spinning loading wheel" class="nobord" width="200" height="266.67">
 						<aside class="notes">
 							When you set out to create or improve a web site or web application, performance is rarely at the forefront of your mind. We think about design, content, functionality first. While those are all valuable, in a way they all hinge on performance. No one uses a site that doesn't load quick enough; they abandon it.
 							On a daily basis, I encounter the spinning wheel of despair. Most often, it's via Twitter's iOS app: I click an interesting link, wait for five seconds, then give up. I don't try to return to the site to track down the article later; there's plenty more interesting content out there. As a web designer or content producer, if your site doesn't load is a reasonable amount of time you're silencing yourself.
@@ -92,6 +88,7 @@
 						<p data-replace="phoneExpectations.html"></p>
 						<aside class="notes">
 							71% of users expect sites to load as quick or _even quicker_ on their smart phones, despite the fact that most phones have less processing power, smaller caches, & frequently operate on weaker connections than their personal computers. What's worse: this trend is worsening! Perhaps because phones seem so new & hi-tech, people expect them to operate faster. & in parallel surveys more people expected them to load faster in 2011 than 2009.
+							59% of users expect sites to load in &lt; 3 seconds.
 						</aside>
 					</section>
 					<section>
@@ -114,6 +111,7 @@
 							But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
 						</aside>
 					</section>
+					<!-- TODO: my specific problem? -->
 				</section>
 
 				<section>
@@ -148,12 +146,11 @@
 							<li>Expires Headers</li>
 							<li>Content Delivery Networks</li>
 						</ol>
-						<!-- Apache icon? Image of horrified person? -->
 					</section>
 					<section>
 						<h1>GZIP</h1>
-						<h3 style="letter-spacing:-6px;">COMPRESSION</h3>
-						<pre><code contenteditable>
+						<p style="letter-spacing:-7px;">HTTP COMPRESSION</p>
+						<pre><code>
 &lt;IfModule mod_deflate.c&gt;
   &lt;IfModule mod_setenvif.c&gt;
     &lt;IfModule mod_headers.c&gt;
@@ -173,8 +170,7 @@
 						</aside>
 					</section>
 					<section>
-						<h2>On IIS?</h2>
-						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7">this MDSN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate">H5BP</a> again.</p>
+						<h1>On IIS?</h1>
 						<small>
 							<pre><code contenteditable>
 &lt;system.webServer&gt;
@@ -197,13 +193,14 @@
 &lt;/system.webServer&gt;
 							</code></pre>
 						</small>
+						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7">this MDSN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate">H5BP</a> again.</p>
 						<aside class="notes">
 							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is a huge win.
 						</aside>
 					</section>
 					<section>
 						<h1>Caching</h1>
-						<pre><code contenteditable>
+						<pre><code>
 # These are pretty far-future expires headers.
 # They assume versioning control w/ filename-based cache busting
 &lt;IfModule mod_expires.c&gt;
@@ -230,6 +227,7 @@
 						<pre><code contenteditable>
 &lt;script src="http://<strong>ajax.googleapis.com/ajax/libs/</strong>jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;
 						</code></pre>
+						<p data-replace="cdn.html"></p>
 						<aside class="notes">
 							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
 							Also - never link to the jQuery latest branch. It doesn't cache, because it's constantly updated, & changes could always break something. Linking to a bleeding-edge version, even a stable one, is insane.
@@ -238,6 +236,7 @@
 				</section>
 
 				<!-- Reduce HTTP Request section -->
+				<!-- TODO Honey I Shrunk the Kids intro slide? -->
 				<section>
 					<section>
 						<h1>Reducing HTTP Requests</h1>
@@ -406,6 +405,7 @@
 				</section>
 
 				<!-- Coding section -->
+				<!-- TODO: Honey I Shrunk the Kids intro slide -->
 				<section>
 					<section>
 						<h1>Code Minification</h1>
@@ -465,7 +465,7 @@ function lazyLoad() {
 							A trick from Gmail where code is commented out & then later parsed & eval'd.
 						</aside>
 					</section>
-					<!-- possible ditch this section -->
+					<!-- possibly ditch this section -->
 					<section>
 						<h1>Don't Be Silly!</h1>
 						<pre><code contenteditable>
@@ -476,7 +476,7 @@ function lazyLoad() {
 ...
 &lt;/section&gt;
 						</code></pre>
-						<p class="small">versus</p>
+						<p>versus</p>
 						<pre><code contenteditable>
 &lt;script&gt;
 $( '.crazy-menu a' ).click( foo );
@@ -490,17 +490,19 @@ $( '.crazy-menu a' ).click( foo );
 				</section>
 
 				<!-- Images section -->
+				<!-- TODO: Honey I Shrunk the Kids intro slide -->
 				<section>
 					<section>
 						<h1>Images</h1>
 						<p>OptiPNG & JPEGtrans, Yahoo! Smush.It</p>
+						<!-- TODO what goes here? -->
 						<aside class="notes">
 							Hopefully you're doing the obvious & including the right size images, not including a huge image & then resizing it down. But images have lots of areas for optimization: metadata & unused color profiles can be stripped out before the file is posted to the web. Savings can range from 20-40%.
 						</aside>
 					</section>
 					<section>
 						<h1>Responsive Images</h1>
-						<p>This is gonna hurt. Funny cat picture.</p>
+						<!-- TODO funny picture -->
 						<aside class="notes">
 							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it.
 							srcset
@@ -608,9 +610,9 @@ $( '.crazy-menu a' ).click( foo );
 								<svg color="#13DAEC" version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 64.124 100" enable-background="new 0 0 64.124 100" space="preserve">
 									<rect fill="#13DAEC" x="-0.69" y="69.902" transform="matrix(0.866 0.5 -0.5 0.866 38.008 2.8741)" width="28.663" height="4.914"></rect>
 									<path fill="#13DAEC" d="M50.154,89.814C57.331,83.048,61.87,73.53,61.87,62.916c0-13.087-6.868-24.882-17.554-31.511l11.966-20.722l-1.881-1.09,l2.96-5.125L49.624,0l-2.96,5.121l-1.985-1.142L15.254,54.953l2.575,1.487l-3.649,6.318l6.456,3.725l3.65-6.311l2.568,1.485,l12.372-21.436c7.596,4.833,12.455,13.305,12.455,22.694c0,14.835-12.07,26.898-26.906,26.898c-9.927,0-21.684,0-21.684,0V100,h61.033V89.814C64.124,89.814,55.091,89.814,50.154,89.814z"></path>
-								</svg>
-							</a> - IE9+
+								</svg></a> - IE9+
 						</p>
+						<!-- TODO put in icon font character -->
 						<p class="left-align">Icon Fonts - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
 						<p class="left-align">Unicode Characters<a href="http://copypastecharacter.com/" title="Copy-Paste Character">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
 						<aside class="notes">
@@ -631,7 +633,6 @@ $( '.crazy-menu a' ).click( foo );
 				</section>
 
 				<!-- other topics to cover
-				Blocking - scripts at the bottom
 				Section just on caching?:
 					Application Cache (is a douchebag)
 					LocalStorage
@@ -639,10 +640,11 @@ $( '.crazy-menu a' ).click( foo );
 					see slide #47: slideshare.net/patrickmeenan/velocity-2012-taming-the-mobile-beast
 				Converting click events to touch saves time
 				AJAX Include (Filament Group blog post)
-				Testing Tools: MobiTest, WebPage Test, Browser Dev Tools, Adobe Shadow, Chrome Remote Debugging, Mobile Safari remote debugging coming in iOS 6
-				Google Analytics Site Speed
-				navigator.connection
-				window.performance.timing
+				Testing Section
+					Tools: MobiTest, WebPage Test, Browser Dev Tools, Adobe Shadow, Chrome Remote Debugging, Mobile Safari remote debugging coming in iOS 6
+					Google Analytics Site Speed
+					navigator.connection
+					window.performance.timing
 				-->
 
 				<section>
@@ -711,67 +713,6 @@ $( '.crazy-menu a' ).click( foo );
 	console.log( '"customevent" has fired' );
 } );
 					</code></pre>
-				</section>
-
-				<section>
-					<h2>Clever Quotes</h2>
-					<p>
-						These guys come in two forms, inline: <q cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						The nice thing about standards is that there are so many to choose from</q> and block:
-					</p>
-					<blockquote cite="http://searchservervirtualization.techtarget.com/definition/Our-Favorite-Technology-Quotations">
-						For years there has been a theory that millions of monkeys typing at random on millions of typewriters would
-						reproduce the entire works of Shakespeare. The Internet has proven this theory to be untrue.
-					</blockquote>
-				</section>
-
-				<section>
-					<h2>Pretty Code</h2>
-					<pre><code contenteditable>
-function linkify( selector ) {
-  if( supports3DTransforms ) {
-
-    var nodes = document.querySelectorAll( selector );
-
-    for( var i = 0, len = nodes.length; i < len; i++ ) {
-      var node = nodes[i];
-
-      if( !node.className ) ) {
-        node.className += ' roll';
-      }
-    };
-  }
-}
-					</code></pre>
-					<p>Courtesy of <a href="http://softwaremaniacs.org/soft/highlight/en/description/">highlight.js</a>.</p>
-				</section>
-
-				<section>
-					<h2>Fragmented Views</h2>
-					<p>Hit the next arrow...</p>
-					<p class="fragment">... to step through ...</p>
-					<ol>
-						<li class="fragment"><code>any type</code></li>
-						<li class="fragment"><em>of view</em></li>
-						<li class="fragment"><strong>fragments</strong></li>
-					</ol>
-				</section>
-
-				<section>
-					<h2>Spectacular image!</h2>
-					<a class="image" href="http://hakim.se/experiments/html5/breakdom/" target="_blank">
-						<!--
-						<img width="320" height="412" src="https://s3.amazonaws.com/hakim-static/reveal-js/breakdom.png" alt="BreakDOM game screenshot">
-						-->
-					</a>
-				</section>
-
-				<section>
-					<h2>Export to PDF</h2>
-					<p>Presentations can be <a href="https://github.com/hakimel/reveal.js#pdf-export">exported to PDF</a>, below is an example that's been uploaded to SlideShare.</p>
-					<!--
-					<iframe src="http://www.slideshare.net/slideshow/embed_code/13872948" width="455" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe>
-					-->
 				</section>
 
 			</div>
