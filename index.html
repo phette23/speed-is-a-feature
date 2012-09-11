@@ -133,7 +133,7 @@
 					</small>
 					<img src="img/histc1.jpg" height="90%" alt="Rick Moranis inspects a spoon with a magnifying glass" title="Look how tiny these bytes are!">
 					<aside class="notes">
-						With those two steps in mind, our theme today will be Rick Moranis-inspired. We're going to some hi-tech science to shrink everything: our images, our code, & our HTTP responses.
+						Rick Moranis will be our spirit guide of sorts on this quest. We're going to some hi-tech science to shrink everything: our images, our code, & our HTTP responses.
 					</aside>
 				</section>
 
@@ -150,8 +150,7 @@
 					<section>
 						<h1>GZIP</h1>
 						<p style="letter-spacing:-7px;">HTTP COMPRESSION</p>
-						<pre><code>
-&lt;IfModule mod_deflate.c&gt;
+<pre><code>&lt;IfModule mod_deflate.c&gt;
   &lt;IfModule mod_setenvif.c&gt;
     &lt;IfModule mod_headers.c&gt;
     SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
@@ -163,8 +162,7 @@
                                   text/css \
                                   text/html
   &lt;/IfModule&gt;
-&lt;/IfModule&gt;
-						</code></pre>
+&lt;/IfModule&gt;</code></pre>
 						<aside class="notes">
 							This is the .htaccess snippet for Apache taken from the HTML5 Boilerplate project. Don't ask me how it works, but you can see that it essentially says "if you have the deflate module, then deflate these MIME types before sending." You can compress any textual content so I've listed the big three here. Don't compress images! They're already compressed so you're just wasting server CPU.
 						</aside>
@@ -172,26 +170,24 @@
 					<section>
 						<h1>On IIS?</h1>
 						<small>
-							<pre><code contenteditable>
-&lt;system.webServer&gt;
+<pre><code>&lt;system.webServer&gt;
   &lt;httpCompression directory="%SystemDrive%\inetpub\temp\IIS Temporary Compressed Files"&gt;
     &lt;scheme name="gzip" dll="%Windir%\system32\inetsrv\gzip.dll"/&gt;
     &lt;dynamicTypes&gt;
-      &lt;add mimeType="text/*" enabled="true"/&gt;
-      &lt;add mimeType="message/*" enabled="true"/&gt;
+      &lt;add mimeType="text/&#10033;" enabled="true"/&gt;
+      &lt;add mimeType="message/&#10033;" enabled="true"/&gt;
       &lt;add mimeType="application/javascript" enabled="true"/&gt;
-      &lt;add mimeType="*/*" enabled="false"/&gt;
+      &lt;add mimeType="&#10033;/&#10033;" enabled="false"/&gt;
     &lt;/dynamicTypes&gt;
     &lt;staticTypes&gt;
-      &lt;add mimeType="text/*" enabled="true"/&gt;
-      &lt;add mimeType="message/*" enabled="true"/&gt;
+      &lt;add mimeType="text/&#10033;" enabled="true"/&gt;
+      &lt;add mimeType="message/&#10033;" enabled="true"/&gt;
       &lt;add mimeType="application/javascript" enabled="true"/&gt;
-      &lt;add mimeType="*/*" enabled="false"/&gt;
+      &lt;add mimeType="&#10033;/&#10033;" enabled="false"/&gt;
     &lt;/staticTypes&gt;
   &lt;/httpCompression&gt;
   &lt;urlCompression doStaticCompression="true" doDynamicCompression="true"/&gt;
-&lt;/system.webServer&gt;
-							</code></pre>
+&lt;/system.webServer&gt;</code></pre>
 						</small>
 						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7">this MDSN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate">H5BP</a> again.</p>
 						<aside class="notes">
@@ -200,8 +196,7 @@
 					</section>
 					<section>
 						<h1>Caching</h1>
-						<pre><code>
-# These are pretty far-future expires headers.
+<pre><code># These are pretty far-future expires headers.
 # They assume versioning control w/ filename-based cache busting
 &lt;IfModule mod_expires.c&gt;
   ExpiresActive on
@@ -215,8 +210,7 @@
 # CSS & JavaScript
   ExpiresByType text/css                  "access plus 1 year"
   ExpiresByType application/javascript    "access plus 1 year"
-&lt;/IfModule&gt;
-						</code></pre>
+&lt;/IfModule&gt;</code></pre>
 						<aside class="notes">
 							Excerpt of HTML5 Boilerplate .htaccess:
 							github.com/h5bp/html5-boilerplate/blob/master/.htaccess
@@ -224,9 +218,7 @@
 					</section>
 					<section>
 						<h1>Use CDNs</h1>
-						<pre><code contenteditable>
-&lt;script src="http://<strong>ajax.googleapis.com/ajax/libs/</strong>jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;
-						</code></pre>
+<pre><code contenteditable>&lt;script src="//<strong>ajax.googleapis.com/ajax/libs/</strong>jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;</code></pre>
 						<p data-replace="cdn.html"></p>
 						<aside class="notes">
 							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
@@ -256,7 +248,7 @@
 					<section>
 						<h1>Image Sprites</h1>
 						<h3>1 HTTP Request, Many Icons</h3>
-						<p><a href="http://spriteme.org/">SpriteMe.org</a> makes this easy.</p>
+						<p><a href="http://spriteme.org/" target="_blank">SpriteMe.org</a> makes this easy.</p>
 						<aside class="notes">
 							jQuery Mobile uses sprite for built-in icons. If you find yourself making several sprites or constantly updating them, turn to a tool like SpriteMe which does a great job.
 							Icon fonts also a good choice here, more on them later.
@@ -374,7 +366,7 @@
 							      font-weight: bold;
 							    }
 							</style>
-        					<a class="btn tweet image" href="//twitter.com/share?url=http://phette.net&via=phette23&lang=en&hashtags=mobileperf" id="tweet-link" title="Tweet this URL"><i></i> Tweet</a>
+        					<a class="btn tweet image" href="//twitter.com/share?url=http://phette.net&via=phette23&lang=en&hashtags=edUI,mobileperf" id="tweet-link" title="Tweet this URL"><i></i> Tweet</a>
 							<p class="fragment positive-color">2 requests, 5.84kbs, ≈250-350ms onload</p>
 						</div>
 						<aside class="notes">
@@ -385,9 +377,7 @@
 						<h1>Inline Everything</h1>
 						<p data-replace="inline.html"></p>
 						<div class="fragment">
-							<pre><code contenteditable>
-.inline-img { background: url(data:image/jpeg;base64,wTfD0esALlth1Sgi1313ERishM34n...); }
-							</code></pre>
+<pre><code contenteditable>.inline-img { background: url(data:image/jpeg;base64,wTfD0esALlth1Sgi1313ERishM34n...); }</code></pre>
 						</div>
 						<aside class="notes">
 							You can inline not only CSS & JavaScript, in style & script tags, but images too via base64-encoded data URIs. This actually may increase the file size a bit, but that's partially offset by Gzip compression. Ideally you'd do this using CSS background images so the image is cached along with the CSS file. This is a mobile-specific tradeoff: on mobile, requests are even more expensive than usual, so while base64 encoding isn't always a win on desktop it can be on mobile.
@@ -416,8 +406,7 @@
 					<section>
 						<h1>Source Order</h1>
 						<p>Scripts at the bottom, please.</p>
-						<pre><code contenteditable>
-&lt;!doctype html public "¿"&gt;
+<pre><code contenteditable>&lt;!doctype html public "¿"&gt;
 &lt;html&gt;
 	&lt;head&gt;
 		&lt;title&gt;Teh Awesome Sauce&lt;/title&gt;
@@ -429,13 +418,11 @@
 		&lt;p&gt;Lorem ipsum dolor sit amet...&lt;/p&gt;
 		...
 	&lt;/body&gt;
-&lt;/html&gt;
-						</code></pre>
+&lt;/html&gt;</code></pre>
 					</section>
 					<section>
 						<h1>Defer JS Execution</h1>
-						<pre><code contenteditable>
-&lt;script id="lazy"&gt;/*
+<pre><code contenteditable>&lt;script id="lazy"&gt;/*
 alert("Hello, edUI!");
 */&lt;/script&gt;
 &lt;script&gt;
@@ -446,8 +433,7 @@ function lazyLoad() {
 	var jsCode = lazyElBody.substring(2, len - 2);
 	eval(jsCode);
 }
-&lt;/script&gt;
-						</code></pre>
+&lt;/script&gt;</code></pre>
 						<button onclick="lazyLoad();">Lazy Load It!</button>
 						<script id="lazy">/*
 						alert("Hello, edUI!");
@@ -468,20 +454,16 @@ function lazyLoad() {
 					<!-- possibly ditch this section -->
 					<section>
 						<h1>Don't Be Silly!</h1>
-						<pre><code contenteditable>
-&lt;section class="crazy-menu"&gt;
+<pre><code>&lt;section class="crazy-menu"&gt;
 &lt;a href="#" onclick="foo('http://www.example.com/one/');return false;"&gt;1&lt;/a&gt;
 &lt;a href="#" onclick="foo('http://www.example.com/two/');return false;"&gt;2&lt;/a&gt;
 &lt;a href="#" onclick="foo('http://www.example.com/three/');return false;"&gt;3&lt;/a&gt;
 ...
-&lt;/section&gt;
-						</code></pre>
+&lt;/section&gt;</code></pre>
 						<p>versus</p>
-						<pre><code contenteditable>
-&lt;script&gt;
+<pre><code contenteditable>&lt;script&gt;
 $( '.crazy-menu a' ).click( foo );
-&lt;/script&gt;
-						</code></pre>
+&lt;/script&gt;</code></pre>
 						<aside class="notes">
 							Again, following good coding practices can help trim repetitive code. Avoid using a ton of inline styles which could be covered by a few poignant CSS rules. Don't put JavaScript inside of HTML tag attributes. I still see pages, usually generated by loops of server-side code, where dozens upon dozens of elements have onclick handlers stuffed into them as attributes. Even if it's server-side & it's easy to update, you're including the same code over & over when a single line of jQuery is all you need.
 							Also, random aside - putting type="text/javascript" on script tags or type="text/css" on style tags is redundant. No existing browser uses those attributes. JS & CSS are the assumed default for those tags.
@@ -614,7 +596,7 @@ $( '.crazy-menu a' ).click( foo );
 						</p>
 						<!-- TODO put in icon font character -->
 						<p class="left-align">Icon Fonts - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
-						<p class="left-align">Unicode Characters<a href="http://copypastecharacter.com/" title="Copy-Paste Character">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
+						<p class="left-align">Unicode Characters <a href="http://copypastecharacter.com/" title="Copy-Paste Character">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
 						<aside class="notes">
 							All of these are infinitely scalable. Not only better for responsive designs but also easier to maintain (no versioning issues).
 							What use to be images can be replaced with advanced CSS, SVG, Icon Fonts (IcoMoon lets you build a custom font with just the characters you need), or Unicode Characters.
@@ -646,18 +628,6 @@ $( '.crazy-menu a' ).click( foo );
 					navigator.connection
 					window.performance.timing
 				-->
-
-				<section>
-					<h2>Heads Up</h2>
-					<p>
-						reveal.js is an easy to use, HTML based, presentation tool. You'll need a modern browser with
-						support for CSS 3D transforms to see it in its full glory.
-					</p>
-
-					<aside class="notes">
-						Oh hey, these are some notes. They'll be hidden in your presentation, but you can see them if you run the speaker notes server.
-					</aside>
-				</section>
 
 				<section>
 					<h2>Transition Styles</h2>
