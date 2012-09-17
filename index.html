@@ -85,7 +85,7 @@
 					</section>
 					<section>
 						<h1>Expectations</h1>
-						<p data-replace="phoneExpectations.html"></p>
+						<p data-replace="inc/phoneExpectations.html"></p>
 						<aside class="notes">
 							71% of users expect sites to load as quick or _even quicker_ on their smart phones, despite the fact that most phones have less processing power, smaller caches, & frequently operate on weaker connections than their personal computers. What's worse: this trend is worsening! Perhaps because phones seem so new & hi-tech, people expect them to operate faster. & in parallel surveys more people expected them to load faster in 2011 than 2009.
 							59% of users expect sites to load in &lt; 3 seconds.
@@ -93,7 +93,7 @@
 					</section>
 					<section>
 						<h1>Priorities?</h1>
-						<p data-replace="problems.html"></p>
+						<p data-replace="inc/problems.html"></p>
 						<aside class="notes">
 							You've probably heard a lot about responsive design at this conference, and other web conferences, and on everywhere on the web. With good reason: it's an important paradigm-shift that makes the web portable across any arbitrary screen. But the Gomez survey indicates that site formatting is actually far less of a problem than speed: "slow to load" leapfrogged site crashes to be users top issue in 2011.
 							So when you're creating a responsive website consider this: it's not really responsive if a mobile device on a poor connection can't reasonably be expected to download it all in time. A site that resizes everything to fit a mobile screen is only doing half of the work because you also have to resize the amount of data you're delivering.
@@ -111,10 +111,18 @@
 							But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
 						</aside>
 					</section>
+					<section>
+						<h1>It's Getting Worse</h1>
+						<p data-replace="inc/http-trends.html"></p>
+						<aside class="notes">
+							Despite a renewed emphasis on building sites that work on smaller devices, overall site size has been increasing consistently. This graph from the HTTP Archive shows an increase from November 2010 to September of this year in both total transfer size, which goes from about 705kbs to 1092kbs, and number of requests per page, which goes from 74 to 81.
+							Almost every trend on HTTP Archive is getting worse in terms of performance: more JavaScript, more images, more CSS, more HTML, Page Speed score is decreasing. The only area decreasing is Flash usage.
+						</aside>
+					</section>
 					<!-- TODO: my specific problem? -->
 				</section>
 
-				<section>
+				<section data-state="blackout">
 					<h1>It's Simple</h1>
 					<br>
 					<br>
@@ -219,7 +227,7 @@
 					<section>
 						<h1>Use CDNs</h1>
 <pre><code contenteditable>&lt;script src="//<strong>ajax.googleapis.com/ajax/libs/</strong>jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;</code></pre>
-						<p data-replace="cdn.html"></p>
+						<p data-replace="inc/cdn.html"></p>
 						<aside class="notes">
 							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
 							Also - never link to the jQuery latest branch. It doesn't cache, because it's constantly updated, & changes could always break something. Linking to a bleeding-edge version, even a stable one, is insane.
@@ -228,10 +236,16 @@
 				</section>
 
 				<!-- Reduce HTTP Request section -->
-				<!-- TODO Honey I Shrunk the Kids intro slide? -->
+				<section data-state="soothe">
+					<h1>HTTP Requests</h1>
+					<img src="img/kids-laser2.png" alt="Shrink ray shrinks two kids">
+				</section>
+
+
 				<section>
 					<section>
-						<h1>Reducing HTTP Requests</h1>
+						<h2>Reducing HTTP Requests</h2>
+						<!-- TODO: waterfall chart image -->
 						<aside class="notes">
 							Image of waterfall chart...explain all the pieces. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
 							Also, most mobile browsers can do only 4-6 connections at once per domain. One way to get around this is serving content from multiple domains, but another is just reducing the number of requests needed.
@@ -240,9 +254,22 @@
 					<section>
 						<h1>Concatenate Files</h1>
 						<h3>Goal: a single CSS file, a single JS file.</h3>
+<pre style="height:300px;overflow-y:scroll" class="fragment"><code>&lt;script type="text/javascript" src="/pm/plugins/system/mtupgrade/mootools-uncompressed.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="/pm/media/system/js/caption.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="system/css/system.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="system/css/general.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="ja_purity/css/template.css" type="text/css" /&gt;
+&lt;style type="text/css" media="screen"&gt;@import "anllosa/standard_upv.css";&lt;/style&gt;
+&lt;script language="javascript" type="text/javascript" src="ja_purity/js/ja.script.js"&gt;&lt;/script&gt;
+&lt;script language="javascript" type="text/javascript" src="ja_purity/js/ja.rightcol.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="ja_purity/css/menu.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="ja_purity/styles/background/lighter/style.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="ja_purity/styles/elements/black/style.css" type="text/css" /&gt;</code></pre>
+						<p class="fragment">4 scripts, 6 style sheets</p>
 						<aside class="notes">
-							TODO: build script run-through. Magic unicorn image.
-							Tool to recommend here? HTML5 BP build script.
+							By combining files of the same type, you deliver the same number of bytes but in less requests. This saves mobile users all the latency & slowness of network connections. Ideally, each site would have only a single CSS & a single JavaScript file, though in practice few do.
+							I opened a random set of library mobile sites & I didn't have to look too long before I found one like this, with a big chunk of scripts & CSS in the head (more on why putting scripts in the head is bad later). This page uses 4 scripts & 6 style sheets, essentially suffering users through 8 extra requests.
+							While it's good to separate out files in development, we can use build tools to combine our files before they go into production.
 						</aside>
 					</section>
 					<section>
@@ -375,7 +402,7 @@
 					</section>
 					<section>
 						<h1>Inline Everything</h1>
-						<p data-replace="inline.html"></p>
+						<p data-replace="inc/inline.html"></p>
 						<div class="fragment">
 <pre><code contenteditable>.inline-img { background: url(data:image/jpeg;base64,wTfD0esALlth1Sgi1313ERishM34n...); }</code></pre>
 						</div>
@@ -387,7 +414,7 @@
 					<section>
 						<h1>Slim Content</h1>
 						<p>Deliver what users need & will use.</p>
-						<p data-replace="xkcd.html"></p>
+						<p data-replace="inc/xkcd.html"></p>
 						<aside class="notes">
 							What's good for content strategy is good for performance too: deliver what users want, no fluff. Don't distract with unnecessary bells & whistles. Do they need fifteen images of smiling students when they're trying to find financial aid info?
 						</aside>
@@ -395,10 +422,17 @@
 				</section>
 
 				<!-- Coding section -->
-				<!-- TODO: Honey I Shrunk the Kids intro slide -->
+				<section data-state="soothe">
+					<h1>Code</h1>
+					<img src="img/cookie.png" alt="Tiny kids run towards a giant cookie">
+				</section>
+
 				<section>
 					<section>
 						<h1>Code Minification</h1>
+						<img src="img/magnifying-glass2.png" alt="looking at tiny kids through a magnifying glass" style="margin-top:0;">
+						<p>It's not just for JavaScript anymore!</p>
+						<p>Run your site through <a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compressor</a>.</p>
 						<aside class="notes">
 							Show mobile site run through HTML Compressor.
 						</aside>
@@ -448,9 +482,36 @@ function lazyLoad() {
 							}
 						</script>
 						<aside class="notes">
-							A trick from Gmail where code is commented out & then later parsed & eval'd.
+							This is a pretty advanced trick I heard about from the Gmail mobile team. Basically, we want to smuggle our JS inside of a comment. So when the browser gets to this script, it downloads it, but since it's all parsed as a comment there's very little delay.
+							Then later, based on some event or some user interaction, I can strip out the first two characters & the last two characters, then eval the code to execute it. So for features that the user either A) won't use right away, or B) might not use at all, we can get the JS downloaded but not delay the page load with parsing.
 						</aside>
 					</section>
+
+					<section>
+						<h1>AJAX Include</h1>
+						<p data-replace="inc/ajax-include.html"></p>
+						<aside class="notes">
+							Another very powerful pattern that speeds up the initial page load is AJAX Include. Developed by the Filament Group who did the Boston Globe responsive redesign, AJAX include lets you write modular HTML documents that pull in "extra" content after the page has loaded.
+							The process is dead simple, too: put AJAX include on your page, then call a single line of jQuery. You use data attributes on existing HTML elements to determine how the include is placed in: it can go before or after, replace the element, or be appended to it.
+							I actually used AJAX Include _a lot_ in this presentation. It's a huge presentation with several big images, but I have an hour to get through it so not everything's needed right away. If I open up my JavaScript console, you can see that many pieces are loaded in via XHR.
+						</aside>
+					</section>
+
+					<section>
+						<h2>Take Only What You Need</h2>
+						<p class="left-align">jQuery 1.8 offers <a href="https://github.com/jquery/jquery#how-to-build-your-own-jquery" title="How to build your own jQuery in the jQuery Github repo">modules</a>:</p>
+						<ul>
+							<li>AJAX</li>
+							<li>CSS</li>
+							<li>Deprecated</li>
+							<li>Dimensions</li>
+							<li>Effects</li>
+							<li>Offsets</li>
+						</ul>
+						<p class="left-align">jQuery Mobile has a <a href="http://jquerymobile.com/download-builder/" title="jQuery Mobile Download Builder">Download Builder</a> in alpha. Choose from 49 features, only 5 of which are required.</p>
+						<p>Use <a href="https://github.com/driverdan/cssess" title="bookmarklet that detects unused CSS selectors">CSSess</a> to remove unused styles.</p>
+					</section>
+
 					<!-- possibly ditch this section -->
 					<section>
 						<h1>Don't Be Silly!</h1>
@@ -472,11 +533,16 @@ $( '.crazy-menu a' ).click( foo );
 				</section>
 
 				<!-- Images section -->
-				<!-- TODO: Honey I Shrunk the Kids intro slide -->
+				<section data-state="alert">
+					<h1>Images</h1>
+					<img src="img/splatter.png" alt="Apple sauce all over Rick's glasses" style="margin-top:0;">
+					<p>This one's tough.</p>
+				</section>
+
 				<section>
 					<section>
 						<h1>Images</h1>
-						<p>OptiPNG & JPEGtrans, Yahoo! Smush.It</p>
+						<p>OptiPNG & jpegtran, <a href="http://imageoptim.com/" title="ImageOptim App">ImageOptim</a></p>
 						<!-- TODO what goes here? -->
 						<aside class="notes">
 							Hopefully you're doing the obvious & including the right size images, not including a huge image & then resizing it down. But images have lots of areas for optimization: metadata & unused color profiles can be stripped out before the file is posted to the web. Savings can range from 20-40%.
@@ -484,7 +550,8 @@ $( '.crazy-menu a' ).click( foo );
 					</section>
 					<section>
 						<h1>Responsive Images</h1>
-						<!-- TODO funny picture -->
+						<img src="img/lolwhut.png" alt="Two parents in a helicopter contraption with lights on their heads" style="margin-top:0;">
+						<p>I have no idea what I'm doing.</p>
 						<aside class="notes">
 							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it.
 							srcset
@@ -493,7 +560,7 @@ $( '.crazy-menu a' ).click( foo );
 					</section>
 					<section>
 						<h1>Don't Use Images</h1>
-						<!-- commence the Hipster Ipsum shit
+						<!-- commence the Hipster Ipsum
 							hipsteripsum.me
 						-->
 						<div id="textheavy">
@@ -505,14 +572,14 @@ $( '.crazy-menu a' ).click( foo );
 						<h1>&lt;img&gt; Alternatives</h1>
 						<br>
 						<style scoped>
-						/*	-- RSS Icon in pure CSS
-							-- via Nicolas Gallagher
-							-- nicolasgallagher.com/demo/pure-css-social-media-icons/
+						/*	RSS Icon in pure CSS
+							via Nicolas Gallagher
+							nicolasgallagher.com/demo/pure-css-social-media-icons/
 						 */
 						.rss-icon a {
-							/* I changed block to inline-block
-							and the background color
-							but that's it –phette23 */
+							/*	I changed block to inline-block & the background color
+								but that's it –phette23
+							*/
 							display:inline-block;
 						    width:32px;
 						    height:32px;
@@ -586,6 +653,7 @@ $( '.crazy-menu a' ).click( foo );
 						    border-color:#000;
 						}
 						</style>
+
 						<p class="left-align">CSS <span class="rss-icon"><a class="image" href="http://nicolasgallagher.com/demo/pure-css-social-media-icons/">RSS</a></span> - border-radius & pseudo-elements</p>
 						<p class="left-align">SVG
 							<a class="image" href="http://thenounproject.com/noun/microscope/#icon-No648" title="Microscope - Noun Project">
@@ -594,7 +662,8 @@ $( '.crazy-menu a' ).click( foo );
 									<path fill="#13DAEC" d="M50.154,89.814C57.331,83.048,61.87,73.53,61.87,62.916c0-13.087-6.868-24.882-17.554-31.511l11.966-20.722l-1.881-1.09,l2.96-5.125L49.624,0l-2.96,5.121l-1.985-1.142L15.254,54.953l2.575,1.487l-3.649,6.318l6.456,3.725l3.65-6.311l2.568,1.485,l12.372-21.436c7.596,4.833,12.455,13.305,12.455,22.694c0,14.835-12.07,26.898-26.906,26.898c-9.927,0-21.684,0-21.684,0V100,h61.033V89.814C64.124,89.814,55.091,89.814,50.154,89.814z"></path>
 								</svg></a> - IE9+
 						</p>
-						<!-- TODO put in icon font character -->
+
+						<!-- TODO: put in icon font character -->
 						<p class="left-align">Icon Fonts - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
 						<p class="left-align">Unicode Characters <a href="http://copypastecharacter.com/" title="Copy-Paste Character">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
 						<aside class="notes">
@@ -606,12 +675,111 @@ $( '.crazy-menu a' ).click( foo );
 				</section>
 
 				<section>
-					<h1>¿Questions?</h1>
-					<br>
-					<h2>Links</h2>
-					<p>The presentation: TBD.net</p>
-					<p>The slide deck: <a href="https://github.com/hakimel/reveal.js" title="HTML presentation framework">reveal.js</a> by Hakim El Hattab</p>
-					<p>Resources: <a href="https://www.diigo.com/user/phette23/mobileperf" title="curated links on mobile performance">diigo.com/user/phette23/mobileperf</a></p>
+					<section>
+						<h1>Tools</h1>
+						<img src="img/tools.png" alt="Rick welds on the shrink ray">
+					</section>
+					<section>
+						<h1>Build Scripts</h1>
+
+						<!-- TODO: add coloring if there's time -->
+<pre>
+	_   .--------------------------.
+      _|o|_ |    Welcome to Yeoman,    |
+       |_|  |   ladies and gentlemen!  |
+     / \Y/ \ o_________________________|
+    ||  :  |//
+    o/ --- \
+      _\ /_
+
+</pre>
+					<aside class="notes">
+						TODO: flesh out content here
+						Yeoman
+						HTML5BP
+					</aside>
+					</section>
+
+					<section>
+						<h1>Testing</h1>
+						<img src="img/laser-apple.png" alt="Rick Moranis tests out the shrink ray on an apple" >
+					</section>
+
+					<section>
+						<h1>Mobile Testing I</h1>
+						<p><a href="http://mobitest.akamai.com/m/index.cgi" title="Akamai's MobiTest">MobiTest</a> | <a href="http://www.webpagetest.org/mobile" title="WebPageTest Mobile">WebPageTest</a></p>
+						<img src="img/mobitest.png" alt="MobiTest output shows page load time, page size, waterfall chart, & screenshot" height="318" width="678">
+						<aside class="notes">
+							Both MobiTest & WebPageTest are web applications that let you put in your URL, choose a device & location, then view the results. They give you not only a load time & page size but also a screenshot &  waterfall chart so you can identify specific bottlenecks.
+							Most browsers offer developer tools that give you good performance data whether or not they're mobile browsers.
+						</aside>
+					</section>
+
+					<section>
+						<h1>
+							Mobile Testing II
+						</h1>
+						<ul>
+							<li>Browser Developer Tools</li>
+								<ul>
+									<li><a href="https://chrome.google.com/webstore/detail/ninejjcohidippngpapiilnmkgllmakh?hl=en-US" title="YSlow Chrome Extension">YSlow</a></li>
+									<li><a href="https://chrome.google.com/webstore/detail/ognampngfcbddbfemdapefohjiobgbdl?hl=en-US" title="Speed Tracer Chrome Extension">Speed Tracer</a></li>
+								</ul>
+							<li>Google's <a href="https://developers.google.com/speed/pagespeed/insights">Page Speed Insights</a></li>
+							<li><a href="http://labs.adobe.com/downloads/shadow.html" title="Adobe Shadow Downloads">Adobe Shadow</a></li>
+							<li><a href="https://developers.google.com/chrome-developer-tools/docs/remote-debugging" title="Remote Debugging in Chrome">Remote Debugging</a></li>
+							<li>Steve Souders' <a href="http://stevesouders.com/mobileperf/mobileperfbkm.php" title="All-in-one mobile performance bookmarklet">Mobile Bookmarklet</a></li>
+						</ul>
+						<aside class="notes">
+							Modern browser developer tools, like Firebug & Web Inspector, give you a lot of details in their Network panels which can help you identify slow points. Many slow points will overlap between mobile & desktop so it's OK to use them on a mobile site from a desktop browser.
+							The YSlow & Speed Tracer extensions are a good couple of tools to start with. They examine your sites according to a series of standards & let you know where you could make improvements.
+							Google's Page Speed is a lot like YSlow in that it just evaluates whether your page passes a series of simple tests. Still, it gives you a nice prioritization of waht you should deal with first & what is less essential. It has a "mobile" version but in my experience those results are 90% identical to the desktop.
+							Adobe Shadow is essentially a nice application wrapper around Weinre or Web Inspector Remote which lets you load up a page on your mobile device, then inspect it on another computer. It's a fill-in until remote debugging is available on more devices.
+							Chrome's mobile browser on Android, which doesn't have a fantastic market share, already has remote debugging & remote debugging is supposedly coming to Mobile Safari in iOS 6. I expect many mobile browsers will add this feature soon.
+							Finally, Steve Souders, web performance guru at Google who literally wrote the book on high speed websites, has a mobile super-bookmarklet that gives you access to a series of other bookmarklets. You can run YSlow, Firebug Lite, DOMMonster, CSSess, & other tests from inside your mobile device.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Google Analytics</h1>
+						<h2>Site Speed</h2>
+						<table class="positive-color">
+							<thead>
+								<th>Page</th>
+								<th>Avg. Load Time</th>
+								<th>Pageviews</th>
+								<th>Page Load Sample</th>
+							</thead>
+							<tr>
+								<td>/library/m/</td>
+								<td>1.76s</td>
+								<td>874</td>
+								<td>23</td>
+							</tr>
+							<tr>
+								<td>/library/m/index.html</td>
+								<td>1.01s</td>
+								<td>546</td>
+								<td>6</td>
+							</tr>
+							<tr>
+								<td>/library/m/p/</td>
+								<td>0.00s</td>
+								<td>179</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>/library/m/chat.html</td>
+								<td>2.74s</td>
+								<td>57</td>
+								<td>1</td>
+							</tr>
+						</table>
+						<aside class="notes">
+							Google Analytics has a simple Site Speed mechanism. You just slightly alter the boilerplate Google Analytics code & it tests a subset of visitors to see how long typical performance measures take.
+							The great part about this is it gives you large quantities of longitudinal data with lots of aspects. You can not only see how your site is performing over time & spot possible trends, but can investigate whether specific browsers or platforms are causing you trouble. That can, in turn, give you a specific angle to investigate with further testing.
+						</aside>
+					</section>
 				</section>
 
 				<!-- other topics to cover
@@ -621,69 +789,18 @@ $( '.crazy-menu a' ).click( foo );
 					Caching headers are less effective on mobile because of small cache sizes
 					see slide #47: slideshare.net/patrickmeenan/velocity-2012-taming-the-mobile-beast
 				Converting click events to touch saves time
-				AJAX Include (Filament Group blog post)
-				Testing Section
-					Tools: MobiTest, WebPage Test, Browser Dev Tools, Adobe Shadow, Chrome Remote Debugging, Mobile Safari remote debugging coming in iOS 6
-					Google Analytics Site Speed
-					navigator.connection
-					window.performance.timing
+				navigator.connection
 				-->
 
 				<section>
-					<h2>Transition Styles</h2>
-					<p>
-						You can select from different transitions, like:
-					</p>
-					<ul>
-						<li><a href="http://lab.hakim.se/reveal-js/?transition=cube">Cube</a></li>
-						<li><a href="http://lab.hakim.se/reveal-js/?transition=page">Page</a></li>
-						<li><a href="http://lab.hakim.se/reveal-js/?transition=concave">Concave</a></li>
-						<li><a href="http://lab.hakim.se/reveal-js/?transition=linear">Linear</a></li>
-					</ul>
+					<h1>¿Questions?</h1>
+					<br>
+					<h2>Links</h2>
+					<p>The presentation: TBD.net</p>
+					<p>The slide deck: <a href="https://github.com/hakimel/reveal.js" title="HTML presentation framework">reveal.js</a> by Hakim El Hattab</p>
+					<p>Resources: <a href="https://www.diigo.com/user/phette23/mobileperf" title="curated links on mobile performance">diigo.com/user/phette23/mobileperf</a></p>
 				</section>
-
-				<section>
-					<section data-state="alert">
-						<h2>Global State</h2>
-						<p>
-							Set <code>data-state="something"</code> on a slide and <code>"something"</code>
-							will be added as a class to the document element when the slide is open. This let's you
-							apply broader style changes, like switching the background.
-						</p>
-						<a href="#/7/1" class="image">
-							<!--
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-							-->
-						</a>
-					</section>
-					<section data-state="blackout">
-						<h2>"blackout"</h2>
-						<a href="#/7/2" class="image">
-							<!--
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Down arrow">
-							-->
-						</a>
-					</section>
-					<section data-state="soothe">
-						<h2>"soothe"</h2>
-						<a href="#/7/0" class="image">
-							<!--
-							<img width="178" height="238" src="https://s3.amazonaws.com/hakim-static/reveal-js/arrow.png" alt="Up arrow" style="-webkit-transform: rotate(180deg);">
-							-->
-						</a>
-					</section>
-				</section>
-
-				<section data-state="customevent">
-					<h2>Custom Events</h2>
-					<p>
-						Additionally custom events can be triggered on a per slide basis by binding to the <code>data-state</code> name.
-					</p>
-					<pre><code contenteditable style="font-size: 18px; margin-top: 20px;">Reveal.addEventListener( 'customevent', function() {
-	console.log( '"customevent" has fired' );
-} );
-					</code></pre>
-				</section>
+				<!-- end slides -->
 
 			</div>
 
