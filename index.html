@@ -244,8 +244,30 @@
 
 				<section>
 					<section>
-						<h2>Reducing HTTP Requests</h2>
+						<h1>Reduce HTTP Requests</h1>
 						<!-- TODO: waterfall chart image -->
+						<style scoped>
+						.wf {
+							display: inline-block;
+							font-weight: 800;
+							padding: 1em;
+							margin-right: 0;
+							color: white;
+						}
+						.wf.dns {
+							background-color: blue;
+						}
+						.wf.tcp {
+							background-color: red;
+						}
+						.wf.ttfb {
+							background-color: green;
+						}
+						.wf.dl {
+							background-color: gray;
+						}
+						</style>
+						<div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">Download</div>
 						<aside class="notes">
 							Image of waterfall chart...explain all the pieces. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
 							Also, most mobile browsers can do only 4-6 connections at once per domain. One way to get around this is serving content from multiple domains, but another is just reducing the number of requests needed.
@@ -551,7 +573,7 @@ $( '.crazy-menu a' ).click( foo );
 					<section>
 						<h1>Responsive Images</h1>
 						<img src="img/lolwhut.png" alt="Two parents in a helicopter contraption with lights on their heads" style="margin-top:0;">
-						<p>I have no idea what I'm doing.</p>
+						<p>I have no idea what I'm doing. <small><a href="https://docs.google.com/spreadsheet/ccc?key=0Al0lI17fOl9DdDgxTFVoRzFpV3VCdHk2NTBmdVI2OXc#gid=0" title="Spreadsheet of Responsive Images Techniques" target="_blank">spreadsheet</a></small></p>
 						<aside class="notes">
 							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it.
 							srcset
