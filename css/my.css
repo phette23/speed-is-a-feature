@@ -147,6 +147,30 @@
   border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
 }
 
+/* for Icon Font demo */
+
+@font-face {
+  font-family: 'pile';
+  src:url('fonts/pile.eot');
+  src:url('fonts/pile.eot?#iefix') format('embedded-opentype'),
+    url('fonts/pile.svg#pile') format('svg'),
+    url('fonts/pile.woff') format('woff'),
+    url('fonts/pile.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.icon-poo:before {
+  font-family: 'pile';
+  font-style: normal;
+  speak: none;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  content: "\21";
+  color: #13DAEC;
+}
+
+
 /* specific elements */
 
 #textheavy {
