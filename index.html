@@ -245,7 +245,6 @@
 				<section>
 					<section>
 						<h1>Reduce HTTP Requests</h1>
-						<!-- TODO: waterfall chart image -->
 						<style scoped>
 						.wf {
 							display: inline-block;
@@ -255,19 +254,21 @@
 							color: white;
 						}
 						.wf.dns {
-							background-color: blue;
+							background-color: #77C0CB;
 						}
 						.wf.tcp {
-							background-color: red;
+							background-color: #B3DE5D;
 						}
 						.wf.ttfb {
-							background-color: green;
+							background-color: #A396BE;
 						}
 						.wf.dl {
-							background-color: gray;
+							background-color: #C2C2C2;
 						}
 						</style>
 						<div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">Download</div>
+						<br><br>
+						<p><a href="http://www.softwareishard.com/har/viewer/" target="_blank">HAR Viewer</a></p>
 						<aside class="notes">
 							Image of waterfall chart...explain all the pieces. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
 							Also, most mobile browsers can do only 4-6 connections at once per domain. One way to get around this is serving content from multiple domains, but another is just reducing the number of requests needed.
@@ -453,8 +454,7 @@
 					<section>
 						<h1>Code Minification</h1>
 						<img src="img/magnifying-glass2.png" alt="looking at tiny kids through a magnifying glass" style="margin-top:0;">
-						<p>It's not just for JavaScript anymore!</p>
-						<p>Run your site through <a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compressor</a>.</p>
+						<p><a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compression</a>; not just for JavaScript anymore!</p>
 						<aside class="notes">
 							Show mobile site run through HTML Compressor.
 						</aside>
@@ -687,8 +687,8 @@ $( '.crazy-menu a' ).click( foo );
 						</p>
 
 						<!-- TODO: put in icon font character -->
-						<p class="left-align">Icon Fonts - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
-						<p class="left-align">Unicode Characters <a href="http://copypastecharacter.com/" title="Copy-Paste Character">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
+						<p class="left-align">Icon Fonts <span aria-hidden="true" class="icon-poo"></span> - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
+						<p class="left-align">Unicode Characters <a href="http://copypastecharacter.com/" title="Copy-Paste Character" target="_blank">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
 						<aside class="notes">
 							All of these are infinitely scalable. Not only better for responsive designs but also easier to maintain (no versioning issues).
 							What use to be images can be replaced with advanced CSS, SVG, Icon Fonts (IcoMoon lets you build a custom font with just the characters you need), or Unicode Characters.
@@ -700,7 +700,7 @@ $( '.crazy-menu a' ).click( foo );
 				<section>
 					<section>
 						<h1>Tools</h1>
-						<img src="img/tools.png" alt="Rick welds on the shrink ray">
+						<p data-replace="inc/tools.html"></p>
 					</section>
 					<section>
 						<h1>Build Scripts</h1>
@@ -716,8 +716,10 @@ $( '.crazy-menu a' ).click( foo );
       _\ /_
 
 </pre>
+						<br>
+						<p>Lints, Compiles, Concatenates, Minifies, & Compresses</p>
 					<aside class="notes">
-						TODO: flesh out content here
+						TODO: flesh out content here, make example app
 						Yeoman
 						HTML5BP
 					</aside>
@@ -725,12 +727,12 @@ $( '.crazy-menu a' ).click( foo );
 
 					<section>
 						<h1>Testing</h1>
-						<img src="img/laser-apple.png" alt="Rick Moranis tests out the shrink ray on an apple" >
+						<p data-replace="inc/testing.html"></p>
 					</section>
 
 					<section>
 						<h1>Mobile Testing I</h1>
-						<p><a href="http://mobitest.akamai.com/m/index.cgi" title="Akamai's MobiTest">MobiTest</a> | <a href="http://www.webpagetest.org/mobile" title="WebPageTest Mobile">WebPageTest</a></p>
+						<p><a href="http://mobitest.akamai.com/m/index.cgi" title="Akamai's MobiTest">MobiTest</a> or <a href="http://www.webpagetest.org/mobile" title="WebPageTest Mobile">WebPageTest</a></p>
 						<img src="img/mobitest.png" alt="MobiTest output shows page load time, page size, waterfall chart, & screenshot" height="318" width="678">
 						<aside class="notes">
 							Both MobiTest & WebPageTest are web applications that let you put in your URL, choose a device & location, then view the results. They give you not only a load time & page size but also a screenshot &  waterfall chart so you can identify specific bottlenecks.
