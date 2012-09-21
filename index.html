@@ -565,9 +565,10 @@ $( '.crazy-menu a' ).click( foo );
 					<section>
 						<h1>Images</h1>
 						<p>OptiPNG & jpegtran, <a href="http://imageoptim.com/" title="ImageOptim App">ImageOptim</a></p>
-						<!-- TODO what goes here? -->
+						<p data-replace="inc/imagoptim.html"></p>
 						<aside class="notes">
 							Hopefully you're doing the obvious & including the right size images, not including a huge image & then resizing it down. But images have lots of areas for optimization: metadata & unused color profiles can be stripped out before the file is posted to the web. Savings can range from 20-40%.
+							There are lots of command line tools for this, OptiPNG & jpegtran among them. If you use the Homebrew package manager for Mac OS X then you can find those in there. But there's also a delightfully simple app ImagOptim which is a GUI wrapper around several different image optimization libraries. Drag all your images in & watch the savings accumulate.
 						</aside>
 					</section>
 					<section>
