@@ -65,7 +65,7 @@
 						Just attackclone the grit repo pushmerge, then rubygem the lymphnode js shawarma module – and presto!
 					</blockquote>
 					<p>
-						- <a href="http://html9responsiveboilerstrapjs.com/">HTML9 Responsive Boilerstrap JS</a>
+						- <a href="http://html9responsiveboilerstrapjs.com/" target="_blank">HTML9 Responsive Boilerstrap JS</a>
 					</p>
 					<aside class="notes">
 						We'll be jumping around quite a bit, talking about server configuration, good ol' source code, tools, testing, & more. Some of this will probably sound like gibberish & there will be some messy code pasted into slides. The presentation is all online so don't feel obliged to take notes. If something doesn't make sense, I've linked up a lot of articles that should help explain it later.
@@ -76,8 +76,8 @@
 					<section>
 						<h1>Speed is <em>Important</em></h1>
 						<img src="img/loadingBar.gif" alt="spinning loading wheel" class="nobord" width="200" height="266.67">
-						<img src="img/loadingBar.gif" alt="spinning loading wheel" class="nobord" width="200" height="266.67">
-						<img src="img/loadingBar.gif" alt="spinning loading wheel" class="nobord" width="200" height="266.67">
+						<img src="img/loadingBar.gif" aria-hidden="true" class="nobord" width="200" height="266.67">
+						<img src="img/loadingBar.gif" aria-hidden="true" class="nobord" width="200" height="266.67">
 						<aside class="notes">
 							When you set out to create or improve a web site or web application, performance is rarely at the forefront of your mind. We think about design, content, functionality first. While those are all valuable, in a way they all hinge on performance. No one uses a site that doesn't load quick enough; they abandon it.
 							On a daily basis, I encounter the spinning wheel of despair. Most often, it's via Twitter's iOS app: I click an interesting link, wait for five seconds, then give up. I don't try to return to the site to track down the article later; there's plenty more interesting content out there. As a web designer or content producer, if your site doesn't load is a reasonable amount of time you're silencing yourself.
@@ -95,7 +95,7 @@
 						<h1>Priorities?</h1>
 						<p data-replace="inc/problems.html"></p>
 						<aside class="notes">
-							You've probably heard a lot about responsive design at this conference, and other web conferences, and on everywhere on the web. With good reason: it's an important paradigm-shift that makes the web portable across any arbitrary screen. But the Gomez survey indicates that site formatting is actually far less of a problem than speed: "slow to load" leapfrogged site crashes to be users top issue in 2011.
+							You've probably heard a lot about responsive design at this conference, and other web conferences, and everywhere on the web. With good reason: it's an important paradigm-shift that makes the web portable across any arbitrary screen. But the Compuware survey indicates that site formatting is actually far less of a problem than speed: "slow to load" leapfrogged site crashes to be users' top issue in 2011.
 							So when you're creating a responsive website consider this: it's not really responsive if a mobile device on a poor connection can't reasonably be expected to download it all in time. A site that resizes everything to fit a mobile screen is only doing half of the work because you also have to resize the amount of data you're delivering.
 						</aside>
 					</section>
@@ -197,7 +197,7 @@
   &lt;urlCompression doStaticCompression="true" doDynamicCompression="true"/&gt;
 &lt;/system.webServer&gt;</code></pre>
 						</small>
-						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7">this MDSN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate">H5BP</a> again.</p>
+						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7" target="_blank">this MDSN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate" target="_blank">H5BP</a> again.</p>
 						<aside class="notes">
 							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is a huge win.
 						</aside>
@@ -220,6 +220,8 @@
   ExpiresByType application/javascript    "access plus 1 year"
 &lt;/IfModule&gt;</code></pre>
 						<aside class="notes">
+							Caching is very important. "The fastest HTTP request is one that's never made." Still, a lot of sites fail to use them. The HTTP Archive shows that only around 45% of requests have caching headers. Expires headers tell the browser that the copy in its cache is good up until a certain point.
+							Works well with filename-based versioning; you'll never have an issue where you update a file but some users still have the old in their cache because the filename will change.
 							Excerpt of HTML5 Boilerplate .htaccess:
 							github.com/h5bp/html5-boilerplate/blob/master/.htaccess
 						</aside>
@@ -241,36 +243,40 @@
 					<img src="img/kids-laser2.png" alt="Shrink ray shrinks two kids">
 				</section>
 
-
 				<section>
 					<section>
 						<h1>Reduce HTTP Requests</h1>
 						<style scoped>
 						.wf {
 							display: inline-block;
-							font-weight: 800;
-							padding: 1em;
-							margin-right: 0;
+							font-family: Consolas, "Andale Mono WT", "Andale Mono", "DejaVu Sans Mono", "Liberation Mono", monospace;
+							padding: .2em;
+							margin: 0 0 1em 0;
 							color: white;
+							font-size: 50%;
+							line-height: 1em;
+							float: left;
 						}
 						.wf.dns {
-							background-color: #77C0CB;
+							background-color: blue;
 						}
 						.wf.tcp {
-							background-color: #B3DE5D;
+							background-color: green;
 						}
 						.wf.ttfb {
-							background-color: #A396BE;
+							background-color: red;
 						}
 						.wf.dl {
-							background-color: #C2C2C2;
+							background-color: purple;
 						}
 						</style>
-						<div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">Download</div>
-						<br><br>
-						<p><a href="http://www.softwareishard.com/har/viewer/" target="_blank">HAR Viewer</a></p>
+						<div class="wf">script-one.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">Download</div>
+						<div class="wf" style="clear:left;">script-two.js:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">Download</div>
+						<div class="fragment">
+							<div class="wf" style="clear:left;">script-cat.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">&nbsp;Download&nbsp;both&nbsp;&nbsp;</div>
+						</div>
 						<aside class="notes">
-							Image of waterfall chart...explain all the pieces. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
+							Explain the pieces of a waterfall chart. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
 							Also, most mobile browsers can do only 4-6 connections at once per domain. One way to get around this is serving content from multiple domains, but another is just reducing the number of requests needed.
 						</aside>
 					</section>
@@ -423,6 +429,7 @@
 							The Twitter, Google+, & Facebook "share this" buttons can really kill a page, especially if they're at the top blocking everything below from loading. Consider using a simple button with a link to a sharing protocol.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Inline Everything</h1>
 						<p data-replace="inc/inline.html"></p>
@@ -434,14 +441,7 @@
 							Many performance improvements are tradeoffs like this: while we save a single request, we increase file size or decrease maintainability. You have decide what makes sense for your project.
 						</aside>
 					</section>
-					<section>
-						<h1>Slim Content</h1>
-						<p>Deliver what users need & will use.</p>
-						<p data-replace="inc/xkcd.html"></p>
-						<aside class="notes">
-							What's good for content strategy is good for performance too: deliver what users want, no fluff. Don't distract with unnecessary bells & whistles. Do they need fifteen images of smiling students when they're trying to find financial aid info?
-						</aside>
-					</section>
+
 				</section>
 
 				<!-- Coding section -->
@@ -454,11 +454,12 @@
 					<section>
 						<h1>Code Minification</h1>
 						<img src="img/magnifying-glass2.png" alt="looking at tiny kids through a magnifying glass" style="margin-top:0;">
-						<p><a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compression</a>; not just for JavaScript anymore!</p>
+						<p><a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compression</a>; not just for JavaScript!</p>
 						<aside class="notes">
 							Show mobile site run through HTML Compressor.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Source Order</h1>
 						<p>Scripts at the bottom, please.</p>
@@ -476,6 +477,7 @@
 	&lt;/body&gt;
 &lt;/html&gt;</code></pre>
 					</section>
+
 					<section>
 						<h1>Defer JS Execution</h1>
 <pre><code contenteditable>&lt;script id="lazy"&gt;/*
@@ -510,6 +512,39 @@ function lazyLoad() {
 					</section>
 
 					<section>
+						<h1>Application Cache</h1>
+						<p>index.html</p>
+<pre><code>&lt;!doctype html&gt;
+&lt;html manifest="offline.appcache"&gt;</code></pre>
+						<p>offline.appcache</p>
+<pre><code>CACHE MANIFEST
+#version 1.0 9-25-2012
+CACHE:
+//www.example.com/css/styles.css
+//www.example.com/js/scripts.css
+//www.example.com/img/cookie.jpg
+NEWTORK:
+*</code></pre>
+						<aside class="notes">
+							The HTML5 Application Cache is a good way to speed up performance & gives you control over caching right in your text files. Basically, the
+							You can also specify fallbacks in a FALLBACK section where resources are listed beside one another; the first is the request resource & the second is the one to use if offline.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Appcache Douchebag</h1>
+						<p data-replace="inc/appcache.html"></p>
+						<aside class="notes">
+							On the other hand, application cache is a severely limited & somewhat strange API. Jake Archibald, who works at Lanyrd, has a great presentation and A List Apart article entitled "appcache douchebag" where he details all the annoyances. There are many gotchas:
+								must change appcache itself to receive updates, not just files
+								must use * in NETWORK otherwise appcache doesn't allow non-cached resources
+								cached users don't receive updates right away, must refresh twice
+								not great for a "look-up stuff" site
+								Firefox throws a warning
+						</aside>
+					</section>
+
+					<section>
 						<h1>AJAX Include</h1>
 						<p data-replace="inc/ajax-include.html"></p>
 						<aside class="notes">
@@ -521,7 +556,7 @@ function lazyLoad() {
 
 					<section>
 						<h2>Take Only What You Need</h2>
-						<p class="left-align">jQuery 1.8 offers <a href="https://github.com/jquery/jquery#how-to-build-your-own-jquery" title="How to build your own jQuery in the jQuery Github repo">modules</a>:</p>
+						<p class="left-align">jQuery 1.8 offers <a href="https://github.com/jquery/jquery#how-to-build-your-own-jquery" title="How to build your own jQuery in the jQuery Github repo" target="_blank">modules</a>:</p>
 						<ul>
 							<li>AJAX</li>
 							<li>CSS</li>
@@ -530,28 +565,24 @@ function lazyLoad() {
 							<li>Effects</li>
 							<li>Offsets</li>
 						</ul>
-						<p class="left-align">jQuery Mobile has a <a href="http://jquerymobile.com/download-builder/" title="jQuery Mobile Download Builder">Download Builder</a> in alpha. Choose from 49 features, only 5 of which are required.</p>
-						<p>Use <a href="https://github.com/driverdan/cssess" title="bookmarklet that detects unused CSS selectors">CSSess</a> to remove unused styles.</p>
-					</section>
-
-					<!-- possibly ditch this section -->
-					<section>
-						<h1>Don't Be Silly!</h1>
-<pre><code>&lt;section class="crazy-menu"&gt;
-&lt;a href="#" onclick="foo('http://www.example.com/one/');return false;"&gt;1&lt;/a&gt;
-&lt;a href="#" onclick="foo('http://www.example.com/two/');return false;"&gt;2&lt;/a&gt;
-&lt;a href="#" onclick="foo('http://www.example.com/three/');return false;"&gt;3&lt;/a&gt;
-...
-&lt;/section&gt;</code></pre>
-						<p>versus</p>
-<pre><code contenteditable>&lt;script&gt;
-$( '.crazy-menu a' ).click( foo );
-&lt;/script&gt;</code></pre>
+						<br><br>
+						<p class="left-align">jQuery Mobile has a <a href="http://jquerymobile.com/download-builder/" title="jQuery Mobile Download Builder" target="_blank">Download Builder</a> in alpha.</p>
+						<br>
+						<p>Use <a href="https://github.com/driverdan/cssess" title="bookmarklet that detects unused CSS selectors" target="_blank">CSSess</a> to remove unused styles.</p>
 						<aside class="notes">
-							Again, following good coding practices can help trim repetitive code. Avoid using a ton of inline styles which could be covered by a few poignant CSS rules. Don't put JavaScript inside of HTML tag attributes. I still see pages, usually generated by loops of server-side code, where dozens upon dozens of elements have onclick handlers stuffed into them as attributes. Even if it's server-side & it's easy to update, you're including the same code over & over when a single line of jQuery is all you need.
-							Also, random aside - putting type="text/javascript" on script tags or type="text/css" on style tags is redundant. No existing browser uses those attributes. JS & CSS are the assumed default for those tags.
+							The jQuery Mobile download builder lets you choose from 49 features, only 5 of which are required.
 						</aside>
 					</section>
+
+					<section>
+						<h1>Slim Content</h1>
+						<p>Deliver what users need & will use.</p>
+						<p data-replace="inc/xkcd.html"></p>
+						<aside class="notes">
+							What's good for content strategy is good for performance too: deliver what users want, no fluff. Don't distract with unnecessary bells & whistles. Do they need fifteen images of smiling students when they're trying to find financial aid info?
+						</aside>
+					</section>
+
 				</section>
 
 				<!-- Images section -->
@@ -562,6 +593,7 @@ $( '.crazy-menu a' ).click( foo );
 				</section>
 
 				<section>
+
 					<section>
 						<h1>Images</h1>
 						<p>OptiPNG & jpegtran, <a href="http://imageoptim.com/" title="ImageOptim App">ImageOptim</a></p>
@@ -571,6 +603,7 @@ $( '.crazy-menu a' ).click( foo );
 							There are lots of command line tools for this, OptiPNG & jpegtran among them. If you use the Homebrew package manager for Mac OS X then you can find those in there. But there's also a delightfully simple app ImagOptim which is a GUI wrapper around several different image optimization libraries. Drag all your images in & watch the savings accumulate.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Responsive Images</h1>
 						<img src="img/lolwhut.png" alt="Two parents in a helicopter contraption with lights on their heads" style="margin-top:0;">
@@ -581,6 +614,7 @@ $( '.crazy-menu a' ).click( foo );
 							picture element
 						</aside>
 					</section>
+
 					<section>
 						<h1>Don't Use Images</h1>
 						<!-- commence the Hipster Ipsum
@@ -591,6 +625,7 @@ $( '.crazy-menu a' ).click( foo );
 							<p><strong>Art party kale chips</strong> aliquip scenester. Whatever put a bird on it minim keffiyeh chillwave vinyl, letterpress nesciunt carles exercitation butcher freegan. Tofu brooklyn veniam next level small batch ullamco, nulla proident pickled swag fingerstache ex 3 wolf moon. Ad readymade kale chips twee quis DIY. 3 wolf moon exercitation direct trade mustache wayfarers assumenda. Before they sold out echo park photo booth godard. Butcher artisan aliquip, messenger bag <strong>pork belly 8-bit</strong> eiusmod vice incididunt umami <strong>gastropub portland food truck</strong> voluptate. Small batch labore chambray sapiente aesthetic, gastropub ea. Hoodie next level cardigan veniam commodo, carles synth narwhal eu echo park occupy accusamus thundercats. Viral sint swag dreamcatcher occaecat. <strong>Cillum semiotics sapiente</strong>, sint aliqua mcsweeney's enim portland before they sold out assumenda pariatur keffiyeh aesthetic pop-up raw denim. Chambray pitchfork vinyl brooklyn nesciunt, squid est post-ironic sed excepteur <strong>VHS lo-fi banksy dreamcatcher</strong> lomo. Cardigan anim ea portland shoreditch cupidatat. Est fixie qui small batch, gluten-free kogi swag mollit. Consectetur semiotics organic quinoa, sunt duis gentrify do vegan veniam. Nesciunt qui shoreditch occaecat put a bird on it. Jean shorts skateboard DIY, next level salvia portland cosby sweater occupy irure wes anderson dreamcatcher mustache minim. Cred nostrud whatever, et mcsweeney's voluptate locavore sustainable swag. <strong>Mlkshk fixie velit et</strong>. Sint ethical kale chips scenester, excepteur in fap banksy vero ex gluten-free. Butcher seitan labore reprehenderit. VHS consequat officia scenester authentic, twee aliqua. Officia qui delectus keytar, trust fund blog mcsweeney's portland put a bird on it wolf ennui marfa <strong>locavore. Mustache sustainable</strong> terry richardson trust fund laborum, williamsburg aliqua organic. Authentic placeat irony beard, marfa <strong>semiotics american apparel readymade</strong> labore. Brunch gentrify elit mcsweeney's officia salvia. Bespoke kogi sapiente fixie gluten-free aesthetic. Street art aesthetic nulla consequat, keytar commodo fugiat placeat odd future tempor. Cardigan bicycle rights odio enim, odd future letterpress ennui scenester kale chips jean shorts nesciunt typewriter occupy freegan. Whatever consectetur pour-over farm-to-table, lomo marfa deserunt consequat mcsweeney's vero culpa. Butcher ethnic raw denim wayfarers consequat. Terry richardson dreamcatcher chillwave vinyl ullamco duis farm-to-table marfa eiusmod etsy consectetur sriracha, tumblr salvia. Master cleanse <strong>etsy officia vegan</strong> seitan. Pop-up deserunt carles marfa, keffiyeh banh mi lo-fi occupy officia brooklyn. Sed keffiyeh vice, tattooed aesthetic esse letterpress etsy swag skateboard cliche deserunt occaecat thundercats. Incididunt reprehenderit assumenda helvetica, art party trust fund you probably haven't heard of them letterpress cardigan aliquip <strong>yr mumblecore non four loko</strong>. Dolor assumenda jean shorts nihil typewriter scenester, pitchfork messenger bag cred iphone consequat letterpress. Lo-fi proident vinyl, chambray dolor before they sold out post-ironic consequat sustainable. American apparel gluten-free id irony, locavore artisan occupy anim. <strong>8-bit mumblecore kogi chillwave</strong> dreamcatcher sartorial. Small batch selvage etsy raw denim bushwick. <strong>You probably haven't heard of them</strong> semiotics single-origin coffee minim bespoke ad est mumblecore, velit odio cupidatat ex cred.</p>
 						</div>
 					</section>
+
 					<section>
 						<h1>&lt;img&gt; Alternatives</h1>
 						<br>
@@ -685,8 +720,6 @@ $( '.crazy-menu a' ).click( foo );
 									<path fill="#13DAEC" d="M50.154,89.814C57.331,83.048,61.87,73.53,61.87,62.916c0-13.087-6.868-24.882-17.554-31.511l11.966-20.722l-1.881-1.09,l2.96-5.125L49.624,0l-2.96,5.121l-1.985-1.142L15.254,54.953l2.575,1.487l-3.649,6.318l6.456,3.725l3.65-6.311l2.568,1.485,l12.372-21.436c7.596,4.833,12.455,13.305,12.455,22.694c0,14.835-12.07,26.898-26.906,26.898c-9.927,0-21.684,0-21.684,0V100,h61.033V89.814C64.124,89.814,55.091,89.814,50.154,89.814z"></path>
 								</svg></a> - IE9+
 						</p>
-
-						<!-- TODO: put in icon font character -->
 						<p class="left-align">Icon Fonts <span aria-hidden="true" class="icon-poo"></span> - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
 						<p class="left-align">Unicode Characters <a href="http://copypastecharacter.com/" title="Copy-Paste Character" target="_blank">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
 						<aside class="notes">
@@ -698,10 +731,12 @@ $( '.crazy-menu a' ).click( foo );
 				</section>
 
 				<section>
+
 					<section>
 						<h1>Tools</h1>
 						<p data-replace="inc/tools.html"></p>
 					</section>
+
 					<section>
 						<h1>Build Scripts</h1>
 
@@ -718,11 +753,11 @@ $( '.crazy-menu a' ).click( foo );
 </pre>
 						<br>
 						<p>Lints, Compiles, Concatenates, Minifies, & Compresses</p>
-					<aside class="notes">
-						TODO: flesh out content here, make example app
-						Yeoman
-						HTML5BP
-					</aside>
+						<aside class="notes">
+							We know a lot of best practices & tactics for making our websites faster, but many are a pain to apply & keep consistent such as the
+							Yeoman
+							Other options: HTML5BP build script, Ant, Grunt
+						</aside>
 					</section>
 
 					<section>
@@ -736,14 +771,11 @@ $( '.crazy-menu a' ).click( foo );
 						<img src="img/mobitest.png" alt="MobiTest output shows page load time, page size, waterfall chart, & screenshot" height="318" width="678">
 						<aside class="notes">
 							Both MobiTest & WebPageTest are web applications that let you put in your URL, choose a device & location, then view the results. They give you not only a load time & page size but also a screenshot &  waterfall chart so you can identify specific bottlenecks.
-							Most browsers offer developer tools that give you good performance data whether or not they're mobile browsers.
 						</aside>
 					</section>
 
 					<section>
-						<h1>
-							Mobile Testing II
-						</h1>
+						<h1>Mobile Testing II</h1>
 						<ul>
 							<li>Browser Developer Tools</li>
 								<ul>
@@ -821,7 +853,7 @@ $( '.crazy-menu a' ).click( foo );
 					<h1>¿Questions?</h1>
 					<br>
 					<h2>Links</h2>
-					<p>The presentation: TBD.net</p>
+					<p>The presentation: <a href="http://phette.net/prez/speed-feature-performance-mobile-web">phette.net/m</a></p>
 					<p>The slide deck: <a href="https://github.com/hakimel/reveal.js" title="HTML presentation framework">reveal.js</a> by Hakim El Hattab</p>
 					<p>Resources: <a href="https://www.diigo.com/user/phette23/mobileperf" title="curated links on mobile performance">diigo.com/user/phette23/mobileperf</a></p>
 				</section>
