@@ -48,6 +48,10 @@
     color: #F84646;
 }
 
+.theme-phette23 .reveal img {
+  margin-top: 0;
+}
+
 .centerOnTop {
     position: absolute;
     width: 100%;
