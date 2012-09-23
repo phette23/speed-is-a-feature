@@ -112,7 +112,7 @@
 						</aside>
 					</section>
 					<section>
-						<h1>It's Getting Worse</h1>
+						<h1>Bad Trend</h1>
 						<p data-replace="inc/http-trends.html"></p>
 						<aside class="notes">
 							Despite a renewed emphasis on building sites that work on smaller devices, overall site size has been increasing consistently. This graph from the HTTP Archive shows an increase from November 2010 to September of this year in both total transfer size, which goes from about 705kbs to 1092kbs, and number of requests per page, which goes from 74 to 81.
@@ -197,7 +197,7 @@
   &lt;urlCompression doStaticCompression="true" doDynamicCompression="true"/&gt;
 &lt;/system.webServer&gt;</code></pre>
 						</small>
-						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7" target="_blank">this MDSN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate" target="_blank">H5BP</a> again.</p>
+						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7" target="_blank">this MSDN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate" target="_blank">H5BP</a> again.</p>
 						<aside class="notes">
 							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is a huge win.
 						</aside>
@@ -270,10 +270,10 @@
 							background-color: purple;
 						}
 						</style>
-						<div class="wf">script-one.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">Download</div>
-						<div class="wf" style="clear:left;">script-two.js:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">Download</div>
+						<div class="wf">script-one.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">&nbsp;TTFB&nbsp;</div><div class="wf dl">Download</div>
+						<div class="wf" style="clear:left;">script-two.js:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="wf tcp">TCP</div><div class="wf ttfb">&nbsp;TTFB&nbsp;</div><div class="wf dl">Download</div>
 						<div class="fragment">
-							<div class="wf" style="clear:left;">script-cat.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">TTFB</div><div class="wf dl">&nbsp;Download&nbsp;both&nbsp;&nbsp;</div>
+							<div class="wf" style="clear:left;">script-cat.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">&nbsp;TTFB&nbsp;</div><div class="wf dl">&nbsp;Download&nbsp;both&nbsp;&nbsp;</div>
 						</div>
 						<aside class="notes">
 							Explain the pieces of a waterfall chart. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
@@ -512,9 +512,23 @@ function lazyLoad() {
 					</section>
 
 					<section>
+						<h1>Touch Events</h1>
+						<p>index.html</p>
+<pre><code>&lt;a href="//www.example.com/"&gt;Link&lt;/a&gt;</code></pre>
+						<p>script.js</p>
+<pre><code>var links = document.getElementsByTagName( 'a' );
+var numLinks = links.length;
+for ( var i = 0; i &lt; numLinks; i++ ) {
+	links[ i ].addEventListener( "touchstart", goNow, false);
+}
+function goNow(e) { location = e.target.href; }</code></pre>
+						<p>jQuery Mobile has <a href="http://jquerymobile.com/demos/1.1.1/docs/api/events.html" title="jQuery Mobile Events - note as of v1.1.1">touch & virtual mouse</a> events built in.</p>
+					</section>
+
+					<section>
 						<h1>Application Cache</h1>
 						<p>index.html</p>
-<pre><code>&lt;!doctype html&gt;
+<pre><code>&lt;!doctype html public "☃"&gt;
 &lt;html manifest="offline.appcache"&gt;</code></pre>
 						<p>offline.appcache</p>
 <pre><code>CACHE MANIFEST
@@ -523,7 +537,7 @@ CACHE:
 //www.example.com/css/styles.css
 //www.example.com/js/scripts.css
 //www.example.com/img/cookie.jpg
-NEWTORK:
+NETWORK:
 *</code></pre>
 						<aside class="notes">
 							The HTML5 Application Cache is a good way to speed up performance & gives you control over caching right in your text files. Basically, the
@@ -532,7 +546,7 @@ NEWTORK:
 					</section>
 
 					<section>
-						<h1>Appcache Douchebag</h1>
+						<h2>Appcache Douchebag</h2>
 						<p data-replace="inc/appcache.html"></p>
 						<aside class="notes">
 							On the other hand, application cache is a severely limited & somewhat strange API. Jake Archibald, who works at Lanyrd, has a great presentation and A List Apart article entitled "appcache douchebag" where he details all the annoyances. There are many gotchas:
@@ -567,8 +581,6 @@ NEWTORK:
 						</ul>
 						<br><br>
 						<p class="left-align">jQuery Mobile has a <a href="http://jquerymobile.com/download-builder/" title="jQuery Mobile Download Builder" target="_blank">Download Builder</a> in alpha.</p>
-						<br>
-						<p>Use <a href="https://github.com/driverdan/cssess" title="bookmarklet that detects unused CSS selectors" target="_blank">CSSess</a> to remove unused styles.</p>
 						<aside class="notes">
 							The jQuery Mobile download builder lets you choose from 49 features, only 5 of which are required.
 						</aside>
@@ -752,7 +764,7 @@ NEWTORK:
 
 </pre>
 						<br>
-						<p>Lints, Compiles, Concatenates, Minifies, & Compresses</p>
+						<p>Lints, Compiles, Concatenates, Minifies, Compresses, & Generates Cache Manifest</p>
 						<aside class="notes">
 							We know a lot of best practices & tactics for making our websites faster, but many are a pain to apply & keep consistent such as the
 							Yeoman
@@ -783,8 +795,7 @@ NEWTORK:
 									<li><a href="https://chrome.google.com/webstore/detail/ognampngfcbddbfemdapefohjiobgbdl?hl=en-US" title="Speed Tracer Chrome Extension">Speed Tracer</a></li>
 								</ul>
 							<li>Google's <a href="https://developers.google.com/speed/pagespeed/insights">Page Speed Insights</a></li>
-							<li><a href="http://labs.adobe.com/downloads/shadow.html" title="Adobe Shadow Downloads">Adobe Shadow</a></li>
-							<li><a href="https://developers.google.com/chrome-developer-tools/docs/remote-debugging" title="Remote Debugging in Chrome">Remote Debugging</a></li>
+							<li><a href="https://developers.google.com/chrome-developer-tools/docs/remote-debugging" title="Remote Debugging in Chrome">Remote Debugging</a> a la <a href="http://labs.adobe.com/downloads/shadow.html" title="Adobe Shadow Downloads">Adobe Shadow</a></li>
 							<li>Steve Souders' <a href="http://stevesouders.com/mobileperf/mobileperfbkm.php" title="All-in-one mobile performance bookmarklet">Mobile Bookmarklet</a></li>
 						</ul>
 						<aside class="notes">
@@ -839,12 +850,8 @@ NEWTORK:
 					</section>
 				</section>
 
-				<!-- other topics to cover
-				Section just on caching?:
-					Application Cache (is a douchebag)
-					LocalStorage
-					Caching headers are less effective on mobile because of small cache sizes
-					see slide #47: slideshare.net/patrickmeenan/velocity-2012-taming-the-mobile-beast
+				<!-- other topics:
+				LocalStorage (mention in appcache section)
 				Converting click events to touch saves time
 				navigator.connection
 				-->
