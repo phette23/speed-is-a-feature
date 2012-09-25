@@ -21,7 +21,6 @@
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 		<link rel="stylesheet" href="css/my.css">
 
-
 		<script>
 			// If the query includes print-pdf we'll use the fancy print CSS
 			document.write( '<link rel="stylesheet" href="css/' + (window.location.search.match( /print-pdf/gi ) ? 'print-pdf.css' : 'print.css') + '" type="text/css" media="print">' );
@@ -37,7 +36,9 @@
 		<div class="reveal">
 
 			<!-- Used to fade in a background when a specific slide state is reached -->
-			<div class="state-background"></div>
+			<div class="state-background">
+				<img src="img/edui-logo-white.png" class="consistent">
+			</div>
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
@@ -83,6 +84,7 @@
 							On a daily basis, I encounter the spinning wheel of despair. Most often, it's via Twitter's iOS app: I click an interesting link, wait for five seconds, then give up. I don't try to return to the site to track down the article later; there's plenty more interesting content out there. As a web designer or content producer, if your site doesn't load is a reasonable amount of time you're silencing yourself.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Expectations</h1>
 						<p data-replace="inc/phoneExpectations.html"></p>
@@ -91,6 +93,7 @@
 							59% of users expect sites to load in &lt; 3 seconds.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Priorities?</h1>
 						<p data-replace="inc/problems.html"></p>
@@ -99,6 +102,7 @@
 							So when you're creating a responsive website consider this: it's not really responsive if a mobile device on a poor connection can't reasonably be expected to download it all in time. A site that resizes everything to fit a mobile screen is only doing half of the work because you also have to resize the amount of data you're delivering.
 						</aside>
 					</section>
+
 					<section>
 						<h1>What's More...</h1>
 						<br>
@@ -111,6 +115,7 @@
 							But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Bad Trend</h1>
 						<p data-replace="inc/http-trends.html"></p>
@@ -138,7 +143,7 @@
 						<h1>Honey, I Shrunk the<br>
 							Page Load Time!</h1>
 					</small>
-					<img src="img/histc1.jpg" height="90%" alt="Rick Moranis inspects a spoon with a magnifying glass" title="Look how tiny these bytes are!">
+					<p data-replace="inc/histc.html"></p>
 					<aside class="notes">
 						Rick Moranis will be our spirit guide of sorts on this quest. We're going to some hi-tech science to shrink everything: our images, our code, & our HTTP responses.
 					</aside>
@@ -148,14 +153,10 @@
 				<section>
 					<section>
 						<h1>Server Configuration</h1>
-						<ol>
-							<li>GZIP</li>
-							<li>Expires Headers</li>
-							<li>Content Delivery Networks</li>
-						</ol>
+						<p>Don't be scared.</p>
 					</section>
 					<section>
-						<h1>GZIP</h1>
+						<h2>GZIP</h2>
 						<p style="letter-spacing:-7px;">HTTP COMPRESSION</p>
 <pre><code>&lt;IfModule mod_deflate.c&gt;
   &lt;IfModule mod_setenvif.c&gt;
@@ -174,6 +175,7 @@
 							This is the .htaccess snippet for Apache taken from the HTML5 Boilerplate project. Don't ask me how it works, but you can see that it essentially says "if you have the deflate module, then deflate these MIME types before sending." You can compress any textual content so I've listed the big three here. Don't compress images! They're already compressed so you're just wasting server CPU.
 						</aside>
 					</section>
+
 					<section>
 						<h1>On IIS?</h1>
 						<small>
@@ -201,6 +203,7 @@
 							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is a huge win.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Caching</h1>
 <pre><code># These are pretty far-future expires headers.
@@ -225,6 +228,7 @@
 							github.com/h5bp/html5-boilerplate/blob/master/.htaccess
 						</aside>
 					</section>
+
 					<section>
 						<h1>Use CDNs</h1>
 <pre><code contenteditable>&lt;script src="//<strong>ajax.googleapis.com/ajax/libs/</strong>jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;</code></pre>
@@ -239,7 +243,7 @@
 				<!-- Reduce HTTP Request section -->
 				<section data-state="soothe">
 					<h1>HTTP Requests</h1>
-					<img src="img/kids-laser2.png" alt="Shrink ray shrinks two kids">
+					<p data-replace="inc/laser.html"></p>
 				</section>
 
 				<section>
@@ -279,6 +283,7 @@
 							Also, most mobile browsers can do only 4-6 connections at once per domain. One way to get around this is serving content from multiple domains, but another is just reducing the number of requests needed.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Concatenate Files</h1>
 						<h3>Goal: a single CSS file, a single JS file.</h3>
@@ -300,6 +305,7 @@
 							While it's good to separate out files in development, we can use build tools to combine our files before they go into production.
 						</aside>
 					</section>
+
 					<section>
 						<h1>Image Sprites</h1>
 						<h3>1 HTTP Request, Many Icons</h3>
@@ -310,6 +316,7 @@
 						</aside>
 						<img src="img/fbsprite.png" class="fragment nobord" alt="Facebook's sprite" title="Facebook's sprite">
 					</section>
+
 					<section>
 						<h1>Be Antisocial</h1>
 						<p>
@@ -446,13 +453,13 @@
 				<!-- Coding section -->
 				<section data-state="soothe">
 					<h1>Code</h1>
-					<img src="img/cookie.png" alt="Tiny kids run towards a giant cookie">
+					<p data-replace="inc/cookie.html"></p>
 				</section>
 
 				<section>
 					<section>
-						<h1>Code Minification</h1>
-						<img src="img/magnifying-glass2.png" alt="looking at tiny kids through a magnifying glass" style="margin-top:0;">
+						<h2>Code Minification</h2>
+						<p data-replace="inc/minification.html"></p>
 						<p><a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compression</a>; not just for JavaScript!</p>
 						<aside class="notes">
 							Show mobile site run through HTML Compressor.
@@ -511,7 +518,7 @@ function lazyLoad() {
 					</section>
 
 					<section>
-						<h1>Touch Events</h1>
+						<h2>Touch Events</h2>
 						<p>index.html</p>
 <pre><code>&lt;a href="//www.example.com/"&gt;Link&lt;/a&gt;</code></pre>
 						<p>script.js</p>
@@ -520,12 +527,14 @@ var numLinks = links.length;
 for ( var i = 0; i &lt; numLinks; i++ ) {
 	links[ i ].addEventListener( "touchstart", goNow, false);
 }
-function goNow(e) { location = e.target.href; }</code></pre>
+function goNow( event ) {
+	location = event.currentTarget.href;
+}</code></pre>
 						<p>jQuery Mobile has <a href="http://jquerymobile.com/demos/1.1.1/docs/api/events.html" title="jQuery Mobile Events - note as of v1.1.1">touch & virtual mouse</a> events built in.</p>
 					</section>
 
 					<section>
-						<h1>Application Cache</h1>
+						<h2>Application Cache</h2>
 						<p>index.html</p>
 <pre><code>&lt;!doctype html public "☃"&gt;
 &lt;html manifest="offline.appcache"&gt;</code></pre>
@@ -534,7 +543,7 @@ function goNow(e) { location = e.target.href; }</code></pre>
 #version 1.0 9-25-2012
 CACHE:
 //www.example.com/css/styles.css
-//www.example.com/js/scripts.css
+//www.example.com/js/scripts.js
 //www.example.com/img/cookie.jpg
 NETWORK:
 *</code></pre>
@@ -581,12 +590,14 @@ NETWORK:
 						<br><br>
 						<p class="left-align">jQuery Mobile has a <a href="http://jquerymobile.com/download-builder/" title="jQuery Mobile Download Builder" target="_blank">Download Builder</a> in alpha.</p>
 						<aside class="notes">
+							jQuery most recent major version release gives you the opportunity to "build your own jQuery" containing just the components you need. Lots of JS libraries are already modular, like YUI & Dojo, but now jQuery is too.
 							The jQuery Mobile download builder lets you choose from 49 features, only 5 of which are required.
+							The point is: only download the code you use. No one should do that horrible antipattern of including jQuery just to use $('#something') as an alias for getElementById.
 						</aside>
 					</section>
 
 					<section>
-						<h1>Slim Content</h1>
+						<h2>Slim Content</h2>
 						<p>Deliver what users need & will use.</p>
 						<p data-replace="inc/xkcd.html"></p>
 						<aside class="notes">
@@ -599,12 +610,11 @@ NETWORK:
 				<!-- Images section -->
 				<section data-state="alert">
 					<h1>Images</h1>
-					<img src="img/splatter.png" alt="Apple sauce all over Rick's glasses" style="margin-top:0;">
+					<p data-replace="inc/splatter.html"></p>
 					<p>This one's tough.</p>
 				</section>
 
 				<section>
-
 					<section>
 						<h1>Images</h1>
 						<p>OptiPNG & jpegtran, <a href="http://imageoptim.com/" title="ImageOptim App">ImageOptim</a></p>
@@ -617,7 +627,7 @@ NETWORK:
 
 					<section>
 						<h1>Responsive Images</h1>
-						<img src="img/lolwhut.png" alt="Two parents in a helicopter contraption with lights on their heads" style="margin-top:0;">
+						<p data-replace="inc/lolwhut.html"></p>
 						<p>I have no idea what I'm doing. <small><a href="https://docs.google.com/spreadsheet/ccc?key=0Al0lI17fOl9DdDgxTFVoRzFpV3VCdHk2NTBmdVI2OXc#gid=0" title="Spreadsheet of Responsive Images Techniques" target="_blank">spreadsheet</a></small></p>
 						<aside class="notes">
 							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it.
@@ -785,7 +795,7 @@ NETWORK:
 					<section>
 						<h1>Mobile Testing I</h1>
 						<p><a href="http://mobitest.akamai.com/m/index.cgi" title="Akamai's MobiTest">MobiTest</a> or <a href="http://www.webpagetest.org/mobile" title="WebPageTest Mobile">WebPageTest</a></p>
-						<img src="img/mobitest.png" alt="MobiTest output shows page load time, page size, waterfall chart, & screenshot" height="318" width="678">
+						<p data-replace="inc/webpagetest.html"></p>
 						<aside class="notes">
 							Both MobiTest & WebPageTest are web applications that let you put in your URL, choose a device & location, then view the results. They give you not only a load time & page size but also a screenshot &  waterfall chart so you can identify specific bottlenecks.
 						</aside>
@@ -800,7 +810,7 @@ NETWORK:
 									<li><a href="https://chrome.google.com/webstore/detail/ognampngfcbddbfemdapefohjiobgbdl?hl=en-US" title="Speed Tracer Chrome Extension">Speed Tracer</a></li>
 								</ul>
 							<li>Google's <a href="https://developers.google.com/speed/pagespeed/insights">Page Speed Insights</a></li>
-							<li><a href="https://developers.google.com/chrome-developer-tools/docs/remote-debugging" title="Remote Debugging in Chrome">Remote Debugging</a> a la <a href="http://labs.adobe.com/downloads/shadow.html" title="Adobe Shadow Downloads">Adobe Shadow</a></li>
+							<li><a href="https://developers.google.com/chrome-developer-tools/docs/remote-debugging" title="Remote Debugging in Chrome">Remote Debugging</a> a la <a href="http://html.adobe.com/edge/inspect/" title="Adobe Edge Inspect">Adobe Edge Inspect</a></li>
 							<li>Steve Souders' <a href="http://stevesouders.com/mobileperf/mobileperfbkm.php" title="All-in-one mobile performance bookmarklet">Mobile Bookmarklet</a></li>
 						</ul>
 						<aside class="notes">
@@ -856,18 +866,18 @@ NETWORK:
 				</section>
 
 				<!-- other topics:
-				LocalStorage (mention in appcache section)
+				LocalStorage: developer.mozilla.org/en-US/docs/DOM/Storage (mention in appcache section)
 				navigator.connection API
 				-->
 
 				<section>
 					<h1>¿Questions?</h1>
 					<br>
-					<h2>Links</h2>
-					<p><a href="http://twitter.com/phette23">@phette23</a></p>
-					<p>The presentation: <a href="http://phette.net/prez/speed-feature-performance-mobile-web">phette.net/m</a></p>
-					<p>The slide deck: <a href="https://github.com/hakimel/reveal.js" title="HTML presentation framework">reveal.js</a> by Hakim El Hattab</p>
-					<p>Resources: <a href="https://www.diigo.com/user/phette23/mobileperf" title="curated links on mobile performance">diigo.com/user/phette23/mobileperf</a></p>
+					<h2 class="left-align">Links</h2>
+					<p class="left-align">Me: <a href="http://twitter.com/phette23">@phette23</a></p>
+					<p class="left-align">The presentation: <a href="http://phette.net/prez/speed-feature-performance-mobile-web">phette.net/m</a></p>
+					<p class="left-align">The slide deck: <a href="https://github.com/hakimel/reveal.js" title="HTML presentation framework">reveal.js</a> by Hakim El Hattab</p>
+					<p class="left-align">Resources: <a href="https://www.diigo.com/user/phette23/mobileperf" title="curated links on mobile performance">diigo.com/user/phette23/mobileperf</a></p>
 				</section>
 				<!-- end slides -->
 
