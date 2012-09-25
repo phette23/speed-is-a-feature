@@ -58,6 +58,13 @@
     text-align: center;
 }
 
+/* for the logo that's on every page */
+.consistent {
+  position: absolute;
+    bottom: 2%;
+    left: 2%;
+}
+
 /* from Twitter bootstrap */
 .btn {
   display: inline-block;
