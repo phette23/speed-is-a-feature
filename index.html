@@ -49,12 +49,8 @@
 					<br>
 					<br>
 					<div class="right-align positive-color">
-						<p>
-							Eric Phetteplace <a href="https://twitter.com/phette23" title="my Twitter">@phette23</a>
-						</p>
-						<p>
-							Chesapeake College
-						</p>
+						<p>Eric Phetteplace <a href="https://twitter.com/phette23" title="my Twitter">@phette23</a></p>
+						<p>Chesapeake College</p>
 					</div>
 				</section>
 
@@ -66,7 +62,7 @@
 						Just attackclone the grit repo pushmerge, then rubygem the lymphnode js shawarma module – and presto!
 					</blockquote>
 					<p>
-						- <a href="http://html9responsiveboilerstrapjs.com/" target="_blank">HTML9 Responsive Boilerstrap JS</a>
+						– <a href="http://html9responsiveboilerstrapjs.com/" target="_blank">HTML9 Responsive Boilerstrap JS</a>
 					</p>
 					<aside class="notes">
 						We'll be jumping around quite a bit, talking about server configuration, good ol' source code, tools, testing, & more. Some of this will probably sound like gibberish & there will be some messy code pasted into slides. The presentation is all online so don't feel obliged to take notes. If something doesn't make sense, I've linked up a lot of articles that should help explain it later.
@@ -81,7 +77,7 @@
 						<img src="img/loadingBar.gif" aria-hidden="true" class="nobord" width="200" height="266.67">
 						<aside class="notes">
 							When you set out to create or improve a web site or web application, performance is rarely at the forefront of your mind. We think about design, content, functionality first. While those are all valuable, in a way they all hinge on performance. No one uses a site that doesn't load quick enough; they abandon it.
-							On a daily basis, I encounter the spinning wheel of despair. Most often, it's via Twitter's iOS app: I click an interesting link, wait for five seconds, then give up. I don't try to return to the site to track down the article later; there's plenty more interesting content out there. As a web designer or content producer, if your site doesn't load is a reasonable amount of time you're silencing yourself.
+							On a daily basis, I encounter the spinning gif of despair. Most often, it's via Twitter's iOS app: I click an interesting link, wait for five seconds, then give up. I don't try to return to the site to track down the article later; there's plenty more interesting content out there. As a web designer or content producer, if your site doesn't load is a reasonable amount of time you're silencing yourself.
 						</aside>
 					</section>
 
@@ -90,7 +86,8 @@
 						<p data-replace="inc/phoneExpectations.html"></p>
 						<aside class="notes">
 							71% of users expect sites to load as quick or _even quicker_ on their smart phones, despite the fact that most phones have less processing power, smaller caches, & frequently operate on weaker connections than their personal computers. What's worse: this trend is worsening! Perhaps because phones seem so new & hi-tech, people expect them to operate faster. & in parallel surveys more people expected them to load faster in 2011 than 2009.
-							59% of users expect sites to load in &lt; 3 seconds.
+							59% of users expect sites to load in < 3 seconds
+							74% will abandon a site that takes more than 5 seconds to load
 						</aside>
 					</section>
 
@@ -111,7 +108,7 @@
 						<br>
 						<h2 class="negative-color">$</h2>
 						<aside class="notes">
-							There's two obvious concerns besides user expectations. A quick, responsive page is good for usability. Even if users don't give up, they're going to be frustrated if they have to wait for your page to load.
+							There are two more obvious concerns besides user expectations. A quick, responsive page is good for usability. Even if users don't give up, they're going to be frustrated if they have to wait for your page to load.
 							But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
 						</aside>
 					</section>
@@ -120,7 +117,7 @@
 						<h1>Bad Trend</h1>
 						<p data-replace="inc/http-trends.html"></p>
 						<aside class="notes">
-							Despite a renewed emphasis on building sites that work on smaller devices, overall site size has been increasing consistently. This graph from the HTTP Archive shows an increase from November 2010 to September of this year in both total transfer size, which goes from about 705kbs to 1092kbs, and number of requests per page, which goes from 74 to 81.
+							Despite a renewed emphasis on building sites that work on smaller devices, overall site size has been increasing consistently. This graph from the HTTP Archive shows an increase from November 2010 to September 2012 in both total transfer size, which goes from about 705kbs to 1092kbs, and number of requests per page, which goes from 74 to 81.
 							Almost every trend on HTTP Archive is getting worse in terms of performance: more JavaScript, more images, more CSS, more HTML, Page Speed score is decreasing. The only area decreasing is Flash usage.
 						</aside>
 					</section>
@@ -172,7 +169,7 @@
   &lt;/IfModule&gt;
 &lt;/IfModule&gt;</code></pre>
 						<aside class="notes">
-							This is the .htaccess snippet for Apache taken from the HTML5 Boilerplate project. Don't ask me how it works, but you can see that it essentially says "if you have the deflate module, then deflate these MIME types before sending." You can compress any textual content so I've listed the big three here. Don't compress images! They're already compressed so you're just wasting server CPU.
+							This is the .htaccess snippet for Apache taken from the HTML5 Boilerplate project. Don't ask me how it works, but you can see that it essentially says "if you have the deflate module, then deflate these MIME types before sending." You can compress any textual content so I've listed the big three here. You generally shouldn't compress images. They're already compressed so you're just wasting server CPU.
 						</aside>
 					</section>
 
@@ -200,14 +197,14 @@
 						</small>
 						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7" target="_blank">this MSDN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate" target="_blank">H5BP</a> again.</p>
 						<aside class="notes">
-							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is a huge win.
+							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is an easy & enormous enhancement.
 						</aside>
 					</section>
 
 					<section>
 						<h1>Caching</h1>
 <pre><code># These are pretty far-future expires headers.
-# They assume versioning control w/ filename-based cache busting
+# Assumes filename-based versioning
 &lt;IfModule mod_expires.c&gt;
   ExpiresActive on
 # Perhaps better to whitelist expires rules? Perhaps.
@@ -236,6 +233,18 @@
 						<aside class="notes">
 							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
 							Also - never link to the jQuery latest branch. It doesn't cache, because it's constantly updated, & changes could always break something. Linking to a bleeding-edge version, even a stable one, is insane.
+						</aside>
+					</section>
+
+					<section>
+						<h1>mod_pagespeed</h1>
+						<br><br>
+						<h3>The Kitchen Sink</h3>
+						<br>
+						<p>Linux Apache only?</p>
+						<aside class="notes">
+							mod_pagespeed is an open source Apache module from Google that employs all the best practices described above, as well as many more that I haven't described yet. It can do things like minify CSS, JS, & HTML as well as optimize images, all without any maintenance cost.
+							The only limitation is that it looks like it runs just on Linux OS with Apache server.
 						</aside>
 					</section>
 				</section>
@@ -440,7 +449,7 @@
 						<h1>Inline Everything</h1>
 						<p data-replace="inc/inline.html"></p>
 						<div class="fragment">
-<pre><code contenteditable>.inline-img { background: url(data:image/jpeg;base64,wTfD0esALlth1Sgi1313ERishM34n...); }</code></pre>
+<pre><code>.inline-img { background: url(data:image/jpeg;base64,wTfD0esALlth1Sgi1313ERishM34n...); }</code></pre>
 						</div>
 						<aside class="notes">
 							You can inline not only CSS & JavaScript, in style & script tags, but images too via base64-encoded data URIs. This actually may increase the file size a bit, but that's partially offset by Gzip compression. Ideally you'd do this using CSS background images so the image is cached along with the CSS file. This is a mobile-specific tradeoff: on mobile, requests are even more expensive than usual, so while base64 encoding isn't always a win on desktop it can be on mobile.
@@ -462,6 +471,7 @@
 						<p data-replace="inc/minification.html"></p>
 						<p><a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compression</a>; not just for JavaScript!</p>
 						<aside class="notes">
+							Lots of sites linked to a minified JavaScript library, which is easy because it's a library & they won't be editing that file. But your CSS & HTML should run through some sort of minification, too. HTML files can have whitespace stripped but also, for instance, quotes around attributes. Savings can be minor (17% for my example) but still worthwhile.
 							Show mobile site run through HTML Compressor.
 						</aside>
 					</section>
@@ -482,6 +492,10 @@
 		...
 	&lt;/body&gt;
 &lt;/html&gt;</code></pre>
+						<aside class="notes">
+							Scripts are blocking. They block parallel downloads. Essentially, when the browser gets to a script it has to read through it & understand what it's doing. It does this because the script might change the DOM with document.write, but also because scripts need to execute in a certain order (so we can't have a smaller but later one finish loading first).
+							Too many people copy bad templates that put their scripts in the head. Sometimes you need a script in the head; jQuery Mobile doesn't work with the scripts in the bottom, unfortunately. But something like Google Analytics can be pushed to the bottom to save load time.
+						</aside>
 					</section>
 
 					<section>
@@ -531,6 +545,9 @@ function goNow( event ) {
 	location = event.currentTarget.href;
 }</code></pre>
 						<p>jQuery Mobile has <a href="http://jquerymobile.com/demos/1.1.1/docs/api/events.html" title="jQuery Mobile Events - note as of v1.1.1">touch & virtual mouse</a> events built in.</p>
+						<aside class="notes">
+							There is about a 200ms delay on mobile Webkit as it waits for a possible double-tap. Running actions on touchstart or touchend eliminates this delay, but those events don't exist on desktop browsers. jQuery Mobile has events like "vclick" & "vmousedown" which abstract around this problem.
+						</aside>
 					</section>
 
 					<section>
@@ -548,7 +565,7 @@ CACHE:
 NETWORK:
 *</code></pre>
 						<aside class="notes">
-							The HTML5 Application Cache is a good way to speed up performance & gives you control over caching right in your text files. Basically, the
+							The HTML5 Application Cache is a good way to speed up performance & gives you control over caching right in your text files. Basically, you control cache in your markup & the cache is more persistent. CACHE MANIFEST must be served with mime-type text/cache-manifest.
 							You can also specify fallbacks in a FALLBACK section where resources are listed beside one another; the first is the request resource & the second is the one to use if offline.
 						</aside>
 					</section>
@@ -561,6 +578,7 @@ NETWORK:
 								must change appcache itself to receive updates, not just files
 								must use * in NETWORK otherwise appcache doesn't allow non-cached resources
 								cached users don't receive updates right away, must refresh twice
+								if 1 resource 404s then the entire cache fails
 								not great for a "look-up stuff" site
 								Firefox throws a warning
 						</aside>
@@ -630,7 +648,7 @@ NETWORK:
 						<p data-replace="inc/lolwhut.html"></p>
 						<p>I have no idea what I'm doing. <small><a href="https://docs.google.com/spreadsheet/ccc?key=0Al0lI17fOl9DdDgxTFVoRzFpV3VCdHk2NTBmdVI2OXc#gid=0" title="Spreadsheet of Responsive Images Techniques" target="_blank">spreadsheet</a></small></p>
 						<aside class="notes">
-							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it.
+							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it. Spreadsheet shows variety of approaches.
 							srcset
 							picture element
 						</aside>
@@ -783,7 +801,7 @@ NETWORK:
 						<aside class="notes">
 							We know a lot of best practices & tactics for making our websites faster, but many are a pain to apply & keep consistent such as the
 							Yeoman
-							Other options: HTML5BP build script, Ant, Grunt
+							Other options: HTML5 Boilerplate build scripts (Ant, Grunt), mod_pagespeed
 						</aside>
 					</section>
 
