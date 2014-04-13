@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="en" class="theme-phette23">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Speed is a Feature: Performance on the Mobile Web</title>
+
+		<meta name="description" content="A presentation on the importance of performance to mobile website design with an eye towards helpful techniques & tools.">
+		<meta name="author" content="Eric Phetteplace">
+		<!-- slide deck is reveal.js by Hakim El Hattab
+		see https://github.com/hakimel/reveal.js -->
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/main.css">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+		<link rel="stylesheet" href="css/my.css">
+
+		<script>
+			// If the query includes print-pdf we'll use the fancy print CSS
+			document.write( '<link rel="stylesheet" href="css/' + (window.location.search.match( /print-pdf/gi ) ? 'print-pdf.css' : 'print.css') + '" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Used to fade in a background when a specific slide state is reached -->
+			<div class="state-background">
+				<img src="img/edui-logo-white.png" class="consistent">
+			</div>
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Speed is a Feature</h1>
+					<h2>Performance on the Mobile Web</h2>
+					<br>
+					<br>
+					<br>
+					<div class="right-align positive-color">
+						<p>Eric Phetteplace <a href="https://twitter.com/phette23" title="my Twitter">@phette23</a></p>
+						<p>Chesapeake College</p>
+					</div>
+				</section>
+
+				<!-- Intro & importance section -->
+				<section>
+					<h2>¡Warning!</h2>
+					<br>
+					<blockquote>
+						Just attackclone the grit repo pushmerge, then rubygem the lymphnode js shawarma module – and presto!
+					</blockquote>
+					<p>
+						– <a href="http://html9responsiveboilerstrapjs.com/" target="_blank">HTML9 Responsive Boilerstrap JS</a>
+					</p>
+					<aside class="notes">
+						We'll be jumping around quite a bit, talking about server configuration, good ol' source code, tools, testing, & more. Some of this will probably sound like gibberish & there will be some messy code pasted into slides. The presentation is all online so don't feel obliged to take notes. If something doesn't make sense, I've linked up a lot of articles that should help explain it later.
+					</aside>
+				</section>
+
+				<section>
+					<section>
+						<h1>Speed is <em>Important</em></h1>
+						<img src="img/loadingBar.gif" alt="spinning loading wheel" class="nobord" width="200" height="266.67">
+						<img src="img/loadingBar.gif" aria-hidden="true" class="nobord" width="200" height="266.67">
+						<img src="img/loadingBar.gif" aria-hidden="true" class="nobord" width="200" height="266.67">
+						<aside class="notes">
+							When you set out to create or improve a web site or web application, performance is rarely at the forefront of your mind. We think about design, content, functionality first. While those are all valuable, in a way they all hinge on performance. No one uses a site that doesn't load quick enough; they abandon it.
+							On a daily basis, I encounter the spinning gif of despair. Most often, it's via Twitter's iOS app: I click an interesting link, wait for five seconds, then give up. I don't try to return to the site to track down the article later; there's plenty more interesting content out there. As a web designer or content producer, if your site doesn't load is a reasonable amount of time you're silencing yourself.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Expectations</h1>
+						<p data-replace="inc/phoneExpectations.html"></p>
+						<aside class="notes">
+							71% of users expect sites to load as quick or _even quicker_ on their smart phones, despite the fact that most phones have less processing power, smaller caches, & frequently operate on weaker connections than their personal computers. What's worse: this trend is worsening! Perhaps because phones seem so new & hi-tech, people expect them to operate faster. & in parallel surveys more people expected them to load faster in 2011 than 2009.
+							59% of users expect sites to load in < 3 seconds
+							74% will abandon a site that takes more than 5 seconds to load
+						</aside>
+					</section>
+
+					<section>
+						<h1>Priorities?</h1>
+						<p data-replace="inc/problems.html"></p>
+						<aside class="notes">
+							You've probably heard a lot about responsive design at this conference, and other web conferences, and everywhere on the web. With good reason: it's an important paradigm-shift that makes the web portable across any arbitrary screen. But the Compuware survey indicates that site formatting is actually far less of a problem than speed: "slow to load" leapfrogged site crashes to be users' top issue in 2011.
+							So when you're creating a responsive website consider this: it's not really responsive if a mobile device on a poor connection can't reasonably be expected to download it all in time. A site that resizes everything to fit a mobile screen is only doing half of the work because you also have to resize the amount of data you're delivering.
+						</aside>
+					</section>
+
+					<section>
+						<h1>What's More...</h1>
+						<br>
+						<br>
+						<h2 class="negative-color">UX</h2>
+						<br>
+						<h2 class="negative-color">$</h2>
+						<aside class="notes">
+							There are two more obvious concerns besides user expectations. A quick, responsive page is good for usability. Even if users don't give up, they're going to be frustrated if they have to wait for your page to load.
+							But beyond that, there's a stronger connection between mobile performance & monetary consequences. A lot of people accessing your site may be paying for each KB they pull down. You should consider their wallets as well as their experience.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Bad Trend</h1>
+						<p data-replace="inc/http-trends.html"></p>
+						<aside class="notes">
+							Despite a renewed emphasis on building sites that work on smaller devices, overall site size has been increasing consistently. This graph from the HTTP Archive shows an increase from November 2010 to September 2012 in both total transfer size, which goes from about 705kbs to 1092kbs, and number of requests per page, which goes from 74 to 81.
+							Almost every trend on HTTP Archive is getting worse in terms of performance: more JavaScript, more images, more CSS, more HTML, Page Speed score is decreasing. The only area decreasing is Flash usage.
+						</aside>
+					</section>
+				</section>
+
+				<section data-state="blackout">
+					<h1>It's Simple</h1>
+					<br>
+					<br>
+					<h2 class="positive-color">&#8681; Reduce HTTP Requests</h2>
+					<br>
+					<h2 class="positive-color">&#8681; Send Fewer Bytes</h2>
+					<aside class="notes">
+						Luckily, performance isn't rocket science. There's basically two things you do to improve a page: send fewer HTTP requests & make those requests smaller file sizes. And almost all of the advice that applies to desktops applies to mobile, too. I'm going to touch on a few mobile-specific techniques but for the most part a fast page is a fast page.
+					</aside>
+				</section>
+
+				<section data-state="soothe">
+					<small>
+						<h1>Honey, I Shrunk the<br>
+							Page Load Time!</h1>
+					</small>
+					<p data-replace="inc/histc.html"></p>
+					<aside class="notes">
+						Rick Moranis will be our spirit guide of sorts on this quest. We're going to some hi-tech science to shrink everything: our images, our code, & our HTTP responses.
+					</aside>
+				</section>
+
+				<!-- Server configuration section -->
+				<section>
+					<section>
+						<h1>Server Configuration</h1>
+						<p>Don't be scared.</p>
+					</section>
+					<section>
+						<h2>GZIP</h2>
+						<p style="letter-spacing:-7px;">HTTP COMPRESSION</p>
+<pre><code>&lt;IfModule mod_deflate.c&gt;
+  &lt;IfModule mod_setenvif.c&gt;
+    &lt;IfModule mod_headers.c&gt;
+    SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+    RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+    &lt;/IfModule&gt;
+  &lt;/IfModule&gt;
+  &lt;IfModule mod_filter.c&gt;
+    AddOutputFilterByType DEFLATE application/javascript \
+                                  text/css \
+                                  text/html
+  &lt;/IfModule&gt;
+&lt;/IfModule&gt;</code></pre>
+						<aside class="notes">
+							This is the .htaccess snippet for Apache taken from the HTML5 Boilerplate project. Don't ask me how it works, but you can see that it essentially says "if you have the deflate module, then deflate these MIME types before sending." You can compress any textual content so I've listed the big three here. You generally shouldn't compress images. They're already compressed so you're just wasting server CPU.
+						</aside>
+					</section>
+
+					<section>
+						<h1>On IIS?</h1>
+						<small>
+<pre><code>&lt;system.webServer&gt;
+  &lt;httpCompression directory="%SystemDrive%\inetpub\temp\IIS Temporary Compressed Files"&gt;
+    &lt;scheme name="gzip" dll="%Windir%\system32\inetsrv\gzip.dll"/&gt;
+    &lt;dynamicTypes&gt;
+      &lt;add mimeType="text/&#10033;" enabled="true"/&gt;
+      &lt;add mimeType="message/&#10033;" enabled="true"/&gt;
+      &lt;add mimeType="application/javascript" enabled="true"/&gt;
+      &lt;add mimeType="&#10033;/&#10033;" enabled="false"/&gt;
+    &lt;/dynamicTypes&gt;
+    &lt;staticTypes&gt;
+      &lt;add mimeType="text/&#10033;" enabled="true"/&gt;
+      &lt;add mimeType="message/&#10033;" enabled="true"/&gt;
+      &lt;add mimeType="application/javascript" enabled="true"/&gt;
+      &lt;add mimeType="&#10033;/&#10033;" enabled="false"/&gt;
+    &lt;/staticTypes&gt;
+  &lt;/httpCompression&gt;
+  &lt;urlCompression doStaticCompression="true" doDynamicCompression="true"/&gt;
+&lt;/system.webServer&gt;</code></pre>
+						</small>
+						<p>See <a href="http://blogs.msdn.com/b/vivekkum/archive/2009/02/18/http-compression-in-iis-6-and-iis-7-using-service-account.aspx" title="HTTP COMPRESSION in IIS 6 and IIS 7" target="_blank">this MSDN blog post</a> or <a href="https://github.com/h5bp/server-configs" title="Server Configs | HTML5 Boilerplate" target="_blank">H5BP</a> again.</p>
+						<aside class="notes">
+							Here's the equivalent web.config snippet for Microsoft's IIS. I'm forcing you to look at this hideous XML because it's important: as frontend developers or designers, we don't always have access to server configuration. But it's worth reaching out to your admins. GZIP is an easy & enormous enhancement.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Caching</h1>
+<pre><code># These are pretty far-future expires headers.
+# Assumes filename-based versioning
+&lt;IfModule mod_expires.c&gt;
+  ExpiresActive on
+# Perhaps better to whitelist expires rules? Perhaps.
+  ExpiresDefault                          "access plus 1 month"
+# Your document html
+  ExpiresByType text/html                 "access plus 0 seconds"
+# Media: images, video, audio
+  ExpiresByType image/png                 "access plus 1 month"
+  ExpiresByType image/jpeg                "access plus 1 month"
+# CSS & JavaScript
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+&lt;/IfModule&gt;</code></pre>
+						<aside class="notes">
+							Caching is very important. "The fastest HTTP request is one that's never made." Still, a lot of sites fail to use them. The HTTP Archive shows that only around 45% of requests have caching headers. Expires headers tell the browser that the copy in its cache is good up until a certain point.
+							Works well with filename-based versioning; you'll never have an issue where you update a file but some users still have the old in their cache because the filename will change.
+							Excerpt of HTML5 Boilerplate .htaccess:
+							github.com/h5bp/html5-boilerplate/blob/master/.htaccess
+						</aside>
+					</section>
+
+					<section>
+						<h1>Use CDNs</h1>
+<pre><code contenteditable>&lt;script src="//<strong>ajax.googleapis.com/ajax/libs/</strong>jquery/1.7.2/jquery.min.js"&gt;&lt;/script&gt;</code></pre>
+						<p data-replace="inc/cdn.html"></p>
+						<aside class="notes">
+							Most of the time, the best server isn't yours. Serving your resources from a content delivery network provides a few advantages. For us, large companies like Google and Amazon are better at serving resources quickly because of their hardware & engineering advantages. Their servers are geographically dispersed such that users far away from us can receive responses from nearby machines (not a huge issue where I work). But CDNs are also commonly used, which means first-time visitors may already have a copy of some of your resources in their cache.
+							Also - never link to the jQuery latest branch. It doesn't cache, because it's constantly updated, & changes could always break something. Linking to a bleeding-edge version, even a stable one, is insane.
+						</aside>
+					</section>
+
+					<section>
+						<h1>mod_pagespeed</h1>
+						<br><br>
+						<h3>The Kitchen Sink</h3>
+						<br>
+						<p>Linux Apache only?</p>
+						<aside class="notes">
+							mod_pagespeed is an open source Apache module from Google that employs all the best practices described above, as well as many more that I haven't described yet. It can do things like minify CSS, JS, & HTML as well as optimize images, all without any maintenance cost.
+							The only limitation is that it looks like it runs just on Linux OS with Apache server.
+						</aside>
+					</section>
+				</section>
+
+				<!-- Reduce HTTP Request section -->
+				<section data-state="soothe">
+					<h1>HTTP Requests</h1>
+					<p data-replace="inc/laser.html"></p>
+				</section>
+
+				<section>
+					<section>
+						<h1>Reduce HTTP Requests</h1>
+						<style scoped>
+						.wf {
+							display: inline-block;
+							font-family: Consolas, "Andale Mono", "DejaVu Sans Mono", "Liberation Mono", monospace;
+							padding: .2em;
+							margin: 0 0 1em 0;
+							color: white;
+							font-size: 50%;
+							line-height: 1em;
+							float: left;
+						}
+						.wf.dns {
+							background-color: blue;
+						}
+						.wf.tcp {
+							background-color: green;
+						}
+						.wf.ttfb {
+							background-color: red;
+						}
+						.wf.dl {
+							background-color: purple;
+						}
+						</style>
+						<div class="wf">script-one.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">&nbsp;TTFB&nbsp;</div><div class="wf dl">Download</div>
+						<div class="wf" style="clear:left;">script-two.js:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="wf tcp">TCP</div><div class="wf ttfb">&nbsp;TTFB&nbsp;</div><div class="wf dl">Download</div>
+						<div class="fragment">
+							<div class="wf" style="clear:left;">script-cat.js:&nbsp;&nbsp;&nbsp;</div><div class="wf dns">DNS</div><div class="wf tcp">TCP</div><div class="wf ttfb">&nbsp;TTFB&nbsp;</div><div class="wf dl">&nbsp;Download&nbsp;both&nbsp;&nbsp;</div>
+						</div>
+						<aside class="notes">
+							Explain the pieces of a waterfall chart. DNS, connection handshake, etc. are all repeated with each request. Cookies & headers are sent with each request, which can add up.
+							Also, most mobile browsers can do only 4-6 connections at once per domain. One way to get around this is serving content from multiple domains, but another is just reducing the number of requests needed.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Concatenate Files</h1>
+						<h3>Goal: a single CSS file, a single JS file.</h3>
+<pre style="height:300px;overflow-y:scroll" class="fragment"><code>&lt;script type="text/javascript" src="/pm/plugins/system/mtupgrade/mootools-uncompressed.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="/pm/media/system/js/caption.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="system/css/system.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="system/css/general.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="ja_purity/css/template.css" type="text/css" /&gt;
+&lt;style type="text/css" media="screen"&gt;@import "anllosa/standard_upv.css";&lt;/style&gt;
+&lt;script language="javascript" type="text/javascript" src="ja_purity/js/ja.script.js"&gt;&lt;/script&gt;
+&lt;script language="javascript" type="text/javascript" src="ja_purity/js/ja.rightcol.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="ja_purity/css/menu.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="ja_purity/styles/background/lighter/style.css" type="text/css" /&gt;
+&lt;link rel="stylesheet" href="ja_purity/styles/elements/black/style.css" type="text/css" /&gt;</code></pre>
+						<p class="fragment">4 scripts, 6 style sheets</p>
+						<aside class="notes">
+							By combining files of the same type, you deliver the same number of bytes but in less requests. This saves mobile users all the latency & slowness of network connections. Ideally, each site would have only a single CSS & a single JavaScript file, though in practice few do.
+							I opened a random set of library mobile sites & I didn't have to look too long before I found one like this, with a big chunk of scripts & CSS in the head (more on why putting scripts in the head is bad later). This page uses 4 scripts & 6 style sheets, essentially suffering users through 8 extra requests.
+							While it's good to separate out files in development, we can use build tools to combine our files before they go into production.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Image Sprites</h1>
+						<h3>1 HTTP Request, Many Icons</h3>
+						<p><a href="http://spriteme.org/" target="_blank">SpriteMe.org</a> makes this easy.</p>
+						<aside class="notes">
+							jQuery Mobile uses sprite for built-in icons. If you find yourself making several sprites or constantly updating them, turn to a tool like SpriteMe which does a great job.
+							Icon fonts also a good choice here, more on them later.
+						</aside>
+						<img src="img/fbsprite.png" class="fragment nobord" alt="Facebook's sprite" title="Facebook's sprite">
+					</section>
+
+					<section>
+						<h1>Be Antisocial</h1>
+						<p>
+							<em>Sharing buttons are the lawn gnomes of the Internet.™</em>
+						</p>
+						<br>
+						<div>
+							<a href="https://twitter.com/share" class="twitter-share-button" data-via="phette23" data-size="large" data-hashtags="mobileperf" data-dnt="true">Tweet</a>
+							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+							<p class="fragment negative-color">7 requests, 48.72kbs, ≈550-700ms onload</p>
+						</div>
+						<p>Versus</p>
+						<br>
+						<div>
+							<style scoped>
+								.btn {
+							      display: inline-block;
+							      *display: inline;
+							      padding: 2px 7px;
+							      margin-bottom: 0;
+							      *margin-left: .3em;
+							      font-size: 14px;
+							      line-height: 20px;
+							      *line-height: 20px;
+							      color: #333333;
+							      text-align: center;
+							      text-decoration: none;
+							      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+							      vertical-align: middle;
+							      cursor: pointer;
+							      background-color: #f5f5f5;
+							      *background-color: #e6e6e6;
+							      background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+							      background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+							      background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+							      background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+							      background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+							      background-repeat: repeat-x;
+							      border: 1px solid #bbbbbb;
+							      *border: 0;
+							      border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+							      border-color: #e6e6e6 #e6e6e6 #bfbfbf;
+							      border-bottom-color: #a2a2a2;
+							      -webkit-border-radius: 4px;
+							         -moz-border-radius: 4px;
+							              border-radius: 4px;
+							      filter: progid:dximagetransform.microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+							      filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+							      *zoom: 1;
+							      -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+							         -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+							              box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+							    }
+							    .btn:hover,
+							    .btn:active,
+							    .btn.active {
+							      color: #333333;
+							      background-color: #e6e6e6;
+							      *background-color: #d9d9d9;
+							    }
+							    .btn:active,
+							    .btn.active {
+							      background-color: #cccccc \9;
+							    }
+							    .btn:first-child {
+							      *margin-left: 0;
+							    }
+							    .btn:hover {
+							      color: #333333;
+							      text-decoration: none;
+							      background-color: #e6e6e6;
+							      *background-color: #d9d9d9;
+							      /* Buttons in IE7 don't get borders, so darken on hover */
+							      background-position: 0 -15px;
+							      -webkit-transition: background-position 0.1s linear;
+							         -moz-transition: background-position 0.1s linear;
+							           -o-transition: background-position 0.1s linear;
+							              transition: background-position 0.1s linear;
+							    }
+							    .btn:focus {
+							      outline: thin dotted #333;
+							      outline: 5px auto -webkit-focus-ring-color;
+							      outline-offset: -2px;
+							    }
+							    .btn.active,
+							    .btn:active {
+							      background-color: #e6e6e6;
+							      background-color: #d9d9d9 \9;
+							      background-image: none;
+							      outline: 0;
+							      -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+							         -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+							              box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
+							    }
+							    .btn {
+							      border-color: #c5c5c5;
+							      border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
+							    }
+							    .tweet i {
+							      display: inline-block;
+							      position: relative;
+							      top: 4px;
+							      width: 21px;
+							      height: 16px;
+							      background: url(img/tweet.png) 0 0 no-repeat;
+							    }
+							    .tweet {
+							      font: 13/26px 'Helvetica Neue', Arial, sans-serif;
+							      font-weight: bold;
+							    }
+							</style>
+        					<a class="btn tweet image" href="//twitter.com/share?url=http://phette.net/m&via=phette23&lang=en&hashtags=eduiconf,mobileperf" id="tweet-link" title="Tweet this URL"><i></i> Tweet</a>
+							<p class="fragment positive-color">2 requests, 5.84kbs, ≈250-350ms onload</p>
+						</div>
+						<aside class="notes">
+							The Twitter, Google+, & Facebook "share this" buttons can really kill a page, especially if they're at the top blocking everything below from loading. Consider using a simple button with a link to a sharing protocol.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Inline Everything</h1>
+						<p data-replace="inc/inline.html"></p>
+						<div class="fragment">
+<pre><code>.inline-img { background: url(data:image/jpeg;base64,wTfD0esALlth1Sgi1313ERishM34n...); }</code></pre>
+						</div>
+						<aside class="notes">
+							You can inline not only CSS & JavaScript, in style & script tags, but images too via base64-encoded data URIs. This actually may increase the file size a bit, but that's partially offset by Gzip compression. Ideally you'd do this using CSS background images so the image is cached along with the CSS file. This is a mobile-specific tradeoff: on mobile, requests are even more expensive than usual, so while base64 encoding isn't always a win on desktop it can be on mobile.
+							Many performance improvements are tradeoffs like this: while we save a single request, we increase file size or decrease maintainability. You have decide what makes sense for your project.
+						</aside>
+					</section>
+
+				</section>
+
+				<!-- Coding section -->
+				<section data-state="soothe">
+					<h1>Code</h1>
+					<p data-replace="inc/cookie.html"></p>
+				</section>
+
+				<section>
+					<section>
+						<h2>Code Minification</h2>
+						<p data-replace="inc/minification.html"></p>
+						<p><a href="https://htmlcompressor.com/compressor.html" target="_blank">HTML Compression</a>; not just for JavaScript!</p>
+						<aside class="notes">
+							Lots of sites linked to a minified JavaScript library, which is easy because it's a library & they won't be editing that file. But your CSS & HTML should run through some sort of minification, too. HTML files can have whitespace stripped but also, for instance, quotes around attributes. Savings can be minor (17% for my example) but still worthwhile.
+							Show mobile site run through HTML Compressor.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Source Order</h1>
+						<p>Scripts at the bottom, please.</p>
+<pre><code contenteditable>&lt;!doctype html public "¿"&gt;
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;Teh Awesome Sauce&lt;/title&gt;
+		&lt;link rel="stylesheet" href="css/style.css"&gt;
+		&lt;script src="js/logic.js"&gt;&lt;/script&gt;
+	&lt;/head&gt;
+	&lt;body&gt;
+		&lt;h1&gt;Teh Awesome Sauce&lt;/h1&gt;
+		&lt;p&gt;Lorem ipsum dolor sit amet...&lt;/p&gt;
+		...
+	&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+						<aside class="notes">
+							Scripts are blocking. They block parallel downloads. Essentially, when the browser gets to a script it has to read through it & understand what it's doing. It does this because the script might change the DOM with document.write, but also because scripts need to execute in a certain order (so we can't have a smaller but later one finish loading first).
+							Too many people copy bad templates that put their scripts in the head. Sometimes you need a script in the head; jQuery Mobile doesn't work with the scripts in the bottom, unfortunately. But something like Google Analytics can be pushed to the bottom to save load time.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Defer JS Execution</h1>
+<pre><code contenteditable>&lt;script id="lazy"&gt;/*
+alert("Hello, edUI!");
+*/&lt;/script&gt;
+&lt;script&gt;
+function lazyLoad() {
+	var lazyEl = document.getElementById('lazy');
+	var lazyElBody = lazyEl.innerHTML;
+	var len = lazyElBody.length;
+	var jsCode = lazyElBody.substring(2, len - 2);
+	eval(jsCode);
+}
+&lt;/script&gt;</code></pre>
+						<button onclick="lazyLoad();">Lazy Load It!</button>
+						<script id="lazy">/*
+						alert("Hello, edUI!");
+						*/</script>
+						<script>
+							function lazyLoad() {
+								var lazyEl = document.getElementById('lazy');
+								var lazyElBody = lazyEl.innerHTML;
+								var len = lazyElBody.length;
+								var jsCode = lazyElBody.substring(2, len - 2);
+								eval(jsCode);
+							}
+						</script>
+						<aside class="notes">
+							This is a pretty advanced trick I heard about from the Gmail mobile team. Basically, we want to smuggle our JS inside of a comment. So when the browser gets to this script, it downloads it, but since it's all parsed as a comment there's very little delay.
+							Then later, based on some event or some user interaction, I can strip out the first two characters & the last two characters, then eval the code to execute it. So for features that the user either A) won't use right away, or B) might not use at all, we can get the JS downloaded but not delay the page load with parsing.
+						</aside>
+					</section>
+
+					<section>
+						<h2>Touch Events</h2>
+						<p>index.html</p>
+<pre><code>&lt;a href="//www.example.com/"&gt;Link&lt;/a&gt;</code></pre>
+						<p>script.js</p>
+<pre><code>var links = document.getElementsByTagName( 'a' );
+var numLinks = links.length;
+for ( var i = 0; i &lt; numLinks; i++ ) {
+	links[ i ].addEventListener( "touchstart", goNow, false);
+}
+function goNow( event ) {
+	location = event.currentTarget.href;
+}</code></pre>
+						<p>jQuery Mobile has <a href="http://jquerymobile.com/demos/1.1.1/docs/api/events.html" title="jQuery Mobile Events - note as of v1.1.1">touch & virtual mouse</a> events built in.</p>
+						<aside class="notes">
+							There is about a 200ms delay on mobile Webkit as it waits for a possible double-tap. Running actions on touchstart or touchend eliminates this delay, but those events don't exist on desktop browsers. jQuery Mobile has events like "vclick" & "vmousedown" which abstract around this problem.
+						</aside>
+					</section>
+
+					<section>
+						<h2>Application Cache</h2>
+						<p>index.html</p>
+<pre><code>&lt;!doctype html public "☃"&gt;
+&lt;html manifest="offline.appcache"&gt;</code></pre>
+						<p>offline.appcache</p>
+<pre><code>CACHE MANIFEST
+#version 1.0 9-25-2012
+CACHE:
+//www.example.com/css/styles.css
+//www.example.com/js/scripts.js
+//www.example.com/img/cookie.jpg
+NETWORK:
+*</code></pre>
+						<aside class="notes">
+							The HTML5 Application Cache is a good way to speed up performance & gives you control over caching right in your text files. Basically, you control cache in your markup & the cache is more persistent. CACHE MANIFEST must be served with mime-type text/cache-manifest.
+							You can also specify fallbacks in a FALLBACK section where resources are listed beside one another; the first is the request resource & the second is the one to use if offline.
+						</aside>
+					</section>
+
+					<section>
+						<h2>Appcache Douchebag</h2>
+						<p data-replace="inc/appcache.html"></p>
+						<aside class="notes">
+							On the other hand, application cache is a severely limited & somewhat strange API. Jake Archibald, who works at Lanyrd, has a great presentation and A List Apart article entitled "appcache douchebag" where he details all the annoyances. There are many gotchas:
+								must change appcache itself to receive updates, not just files
+								must use * in NETWORK otherwise appcache doesn't allow non-cached resources
+								cached users don't receive updates right away, must refresh twice
+								if 1 resource 404s then the entire cache fails
+								not great for a "look-up stuff" site
+								Firefox throws a warning
+						</aside>
+					</section>
+
+					<section>
+						<h1>AJAX Include</h1>
+						<p data-replace="inc/ajax-include.html"></p>
+						<aside class="notes">
+							Another very powerful pattern that speeds up the initial page load is AJAX Include. Developed by the Filament Group who did the Boston Globe responsive redesign, AJAX include lets you write modular HTML documents that pull in "extra" content after the page has loaded.
+							The process is dead simple, too: put AJAX include on your page, then call a single line of jQuery. You use data attributes on existing HTML elements to determine how the include is placed in: it can go before or after, replace the element, or be appended to it.
+							I actually used AJAX Include _a lot_ in this presentation. It's a huge presentation with several big images, but I have an hour to get through it so not everything's needed right away. If I open up my JavaScript console, you can see that many pieces are loaded in via XHR.
+						</aside>
+					</section>
+
+					<section>
+						<h2>Take Only What You Need</h2>
+						<p class="left-align">jQuery 1.8 offers <a href="https://github.com/jquery/jquery#how-to-build-your-own-jquery" title="How to build your own jQuery in the jQuery Github repo" target="_blank">modules</a>:</p>
+						<ul>
+							<li>AJAX</li>
+							<li>CSS</li>
+							<li>Deprecated</li>
+							<li>Dimensions</li>
+							<li>Effects</li>
+							<li>Offsets</li>
+						</ul>
+						<br><br>
+						<p class="left-align">jQuery Mobile has a <a href="http://jquerymobile.com/download-builder/" title="jQuery Mobile Download Builder" target="_blank">Download Builder</a> in alpha.</p>
+						<aside class="notes">
+							jQuery most recent major version release gives you the opportunity to "build your own jQuery" containing just the components you need. Lots of JS libraries are already modular, like YUI & Dojo, but now jQuery is too.
+							The jQuery Mobile download builder lets you choose from 49 features, only 5 of which are required.
+							The point is: only download the code you use. No one should do that horrible antipattern of including jQuery just to use $('#something') as an alias for getElementById.
+						</aside>
+					</section>
+
+					<section>
+						<h2>Slim Content</h2>
+						<p>Deliver what users need & will use.</p>
+						<p data-replace="inc/xkcd.html"></p>
+						<aside class="notes">
+							What's good for content strategy is good for performance too: deliver what users want, no fluff. Don't distract with unnecessary bells & whistles. Do they need fifteen images of smiling students when they're trying to find financial aid info?
+						</aside>
+					</section>
+
+				</section>
+
+				<!-- Images section -->
+				<section data-state="alert">
+					<h1>Images</h1>
+					<p data-replace="inc/splatter.html"></p>
+					<p>This one's tough.</p>
+				</section>
+
+				<section>
+					<section>
+						<h1>Images</h1>
+						<p>OptiPNG & jpegtran, <a href="http://imageoptim.com/" title="ImageOptim App">ImageOptim</a></p>
+						<p data-replace="inc/imagoptim.html"></p>
+						<aside class="notes">
+							Hopefully you're doing the obvious & including the right size images, not including a huge image & then resizing it down. But images have lots of areas for optimization: metadata & unused color profiles can be stripped out before the file is posted to the web. Savings can range from 20-40%.
+							There are lots of command line tools for this, OptiPNG & jpegtran among them. If you use the Homebrew package manager for Mac OS X then you can find those in there. But there's also a delightfully simple app ImagOptim which is a GUI wrapper around several different image optimization libraries. Drag all your images in & watch the savings accumulate.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Responsive Images</h1>
+						<p data-replace="inc/lolwhut.html"></p>
+						<p>I have no idea what I'm doing. <small><a href="https://docs.google.com/spreadsheet/ccc?key=0Al0lI17fOl9DdDgxTFVoRzFpV3VCdHk2NTBmdVI2OXc#gid=0" title="Spreadsheet of Responsive Images Techniques" target="_blank">spreadsheet</a></small></p>
+						<aside class="notes">
+							There's no perfect answer for responsive images but there will be eventually because a lot of smart developers are working on it. Spreadsheet shows variety of approaches.
+							srcset
+							picture element
+						</aside>
+					</section>
+
+					<section>
+						<h1>Don't Use Images</h1>
+						<!-- commence the Hipster Ipsum
+							hipsteripsum.me
+						-->
+						<div id="textheavy">
+							<h2 class="fragment centerOnTop" id="bestEvar">Best Website Evar</h2>
+							<p><strong>Art party kale chips</strong> aliquip scenester. Whatever put a bird on it minim keffiyeh chillwave vinyl, letterpress nesciunt carles exercitation butcher freegan. Tofu brooklyn veniam next level small batch ullamco, nulla proident pickled swag fingerstache ex 3 wolf moon. Ad readymade kale chips twee quis DIY. 3 wolf moon exercitation direct trade mustache wayfarers assumenda. Before they sold out echo park photo booth godard. Butcher artisan aliquip, messenger bag <strong>pork belly 8-bit</strong> eiusmod vice incididunt umami <strong>gastropub portland food truck</strong> voluptate. Small batch labore chambray sapiente aesthetic, gastropub ea. Hoodie next level cardigan veniam commodo, carles synth narwhal eu echo park occupy accusamus thundercats. Viral sint swag dreamcatcher occaecat. <strong>Cillum semiotics sapiente</strong>, sint aliqua mcsweeney's enim portland before they sold out assumenda pariatur keffiyeh aesthetic pop-up raw denim. Chambray pitchfork vinyl brooklyn nesciunt, squid est post-ironic sed excepteur <strong>VHS lo-fi banksy dreamcatcher</strong> lomo. Cardigan anim ea portland shoreditch cupidatat. Est fixie qui small batch, gluten-free kogi swag mollit. Consectetur semiotics organic quinoa, sunt duis gentrify do vegan veniam. Nesciunt qui shoreditch occaecat put a bird on it. Jean shorts skateboard DIY, next level salvia portland cosby sweater occupy irure wes anderson dreamcatcher mustache minim. Cred nostrud whatever, et mcsweeney's voluptate locavore sustainable swag. <strong>Mlkshk fixie velit et</strong>. Sint ethical kale chips scenester, excepteur in fap banksy vero ex gluten-free. Butcher seitan labore reprehenderit. VHS consequat officia scenester authentic, twee aliqua. Officia qui delectus keytar, trust fund blog mcsweeney's portland put a bird on it wolf ennui marfa <strong>locavore. Mustache sustainable</strong> terry richardson trust fund laborum, williamsburg aliqua organic. Authentic placeat irony beard, marfa <strong>semiotics american apparel readymade</strong> labore. Brunch gentrify elit mcsweeney's officia salvia. Bespoke kogi sapiente fixie gluten-free aesthetic. Street art aesthetic nulla consequat, keytar commodo fugiat placeat odd future tempor. Cardigan bicycle rights odio enim, odd future letterpress ennui scenester kale chips jean shorts nesciunt typewriter occupy freegan. Whatever consectetur pour-over farm-to-table, lomo marfa deserunt consequat mcsweeney's vero culpa. Butcher ethnic raw denim wayfarers consequat. Terry richardson dreamcatcher chillwave vinyl ullamco duis farm-to-table marfa eiusmod etsy consectetur sriracha, tumblr salvia. Master cleanse <strong>etsy officia vegan</strong> seitan. Pop-up deserunt carles marfa, keffiyeh banh mi lo-fi occupy officia brooklyn. Sed keffiyeh vice, tattooed aesthetic esse letterpress etsy swag skateboard cliche deserunt occaecat thundercats. Incididunt reprehenderit assumenda helvetica, art party trust fund you probably haven't heard of them letterpress cardigan aliquip <strong>yr mumblecore non four loko</strong>. Dolor assumenda jean shorts nihil typewriter scenester, pitchfork messenger bag cred iphone consequat letterpress. Lo-fi proident vinyl, chambray dolor before they sold out post-ironic consequat sustainable. American apparel gluten-free id irony, locavore artisan occupy anim. <strong>8-bit mumblecore kogi chillwave</strong> dreamcatcher sartorial. Small batch selvage etsy raw denim bushwick. <strong>You probably haven't heard of them</strong> semiotics single-origin coffee minim bespoke ad est mumblecore, velit odio cupidatat ex cred.</p>
+						</div>
+					</section>
+
+					<section>
+						<h1>&lt;img&gt; Alternatives</h1>
+						<br>
+						<style scoped>
+						/*	RSS Icon in pure CSS
+							via Nicolas Gallagher
+							nicolasgallagher.com/demo/pure-css-social-media-icons/
+						 */
+						.rss-icon a {
+							/*	I changed block to inline-block & the background color
+								but that's it –phette23
+							*/
+							display:inline-block;
+						    width:32px;
+						    height:32px;
+						    overflow:hidden;
+						    border:1px solid transparent;
+						    line-height:32px;
+						    text-decoration:none;
+						    /* css3 */
+						    text-shadow:0 -1px 0 rgba(0,0,0,0.5);
+						    -moz-border-radius:2.5px;
+						    -webkit-border-radius:2.5px;
+						    border-radius:2.5px; /* standards version last */
+						    position:relative;
+						    width:30px;
+						    padding:0 1px;
+						    border-color:#ea6635;
+						    text-transform:lowercase;
+						    text-indent:-186px;
+						    font-size:32px;
+						    font-weight:bold;
+						    color:#fff;
+						    background:#e36443;
+
+						    /* css3 */
+						    /* NOTE: box-shadow is not currently in any CSS3 module. It may be reappear in a different form altogether */
+						    -moz-box-shadow:0 0 2px rgba(0,0,0,0.4);
+						    -webkit-box-shadow:0 0 2px rgba(0,0,0,0.4);
+						    box-shadow:0 0 2px rgba(0,0,0,0.4); /* standards version last */
+						    /* NOTE: webkit gradient implementation is not as per spec */
+						    background:-webkit-gradient(linear, left top, left bottom, from(#f19242), to(#e36443));
+						    background:-moz-linear-gradient(top, #f19242, #e36443);
+						}
+
+						/* create circle */
+						.rss-icon a:before {
+						    content:"\00a0";
+						    position:absolute;
+						    bottom:5px;
+						    left:5px;
+						    width:6px;
+						    height:6px;
+						    background:#fff;
+
+						    /* css3 */
+						    -moz-border-radius:6px;
+						    -webkit-border-radius:6px;
+						    border-radius:6px; /* standards version last */
+						}
+
+						/* create the two arcs */
+						.rss-icon a:after {
+						    content:"\00a0";
+						    position:absolute;
+						    bottom:5px;
+						    left:5px;
+						    width:11px;
+						    height:11px;
+						    border-style:double;
+						    border-width:12px 12px 0 0;
+						    border-color:#fff;
+
+						    /* css3 */
+						    -moz-border-radius:0 25px 0 0;
+						    -webkit-border-top-right-radius:25px;
+						    border-radius:0 25px 0 0; /* standards version last */
+						}
+						.rss-icon a:hover,
+						.rss-icon a:focus,
+						.rss-icon a:active {
+						    opacity:0.8;
+						    border-color:#000;
+						}
+						</style>
+
+						<p class="left-align">CSS <span class="rss-icon"><a class="image" href="http://nicolasgallagher.com/demo/pure-css-social-media-icons/">RSS</a></span> - border-radius & pseudo-elements</p>
+						<p class="left-align">SVG
+							<a class="image" href="http://thenounproject.com/noun/microscope/#icon-No648" title="Microscope - Noun Project">
+								<svg color="#13DAEC" version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="40px" height="40px" viewBox="0 0 64.124 100" enable-background="new 0 0 64.124 100" space="preserve">
+									<rect fill="#13DAEC" x="-0.69" y="69.902" transform="matrix(0.866 0.5 -0.5 0.866 38.008 2.8741)" width="28.663" height="4.914"></rect>
+									<path fill="#13DAEC" d="M50.154,89.814C57.331,83.048,61.87,73.53,61.87,62.916c0-13.087-6.868-24.882-17.554-31.511l11.966-20.722l-1.881-1.09,l2.96-5.125L49.624,0l-2.96,5.121l-1.985-1.142L15.254,54.953l2.575,1.487l-3.649,6.318l6.456,3.725l3.65-6.311l2.568,1.485,l12.372-21.436c7.596,4.833,12.455,13.305,12.455,22.694c0,14.835-12.07,26.898-26.906,26.898c-9.927,0-21.684,0-21.684,0V100,h61.033V89.814C64.124,89.814,55.091,89.814,50.154,89.814z"></path>
+								</svg></a> - IE9+
+						</p>
+						<p class="left-align">Icon Fonts <span aria-hidden="true" class="icon-poo"></span> - <a href="http://keyamoon.com/icomoon/app/" target="_blank">IcoMoon</a></p>
+						<p class="left-align">Unicode Characters <a href="http://copypastecharacter.com/" title="Copy-Paste Character" target="_blank">☃</a> - <a href="http://mobilewebbestpractices.com/" target="_blank">Mobile Web Best Practices</a></p>
+						<aside class="notes">
+							All of these are infinitely scalable. Not only better for responsive designs but also easier to maintain (no versioning issues).
+							What use to be images can be replaced with advanced CSS, SVG, Icon Fonts (IcoMoon lets you build a custom font with just the characters you need), or Unicode Characters.
+							For Unicode, note mobilewebbestpractices.com which uses characters to keep a playing card theme without requesting any images.
+						</aside>
+					</section>
+				</section>
+
+				<section>
+
+					<section>
+						<h1>Tools</h1>
+						<p data-replace="inc/tools.html"></p>
+					</section>
+
+					<section>
+						<h1>Build Scripts</h1>
+						<style scoped>
+						pre.terminal {
+							color: rgb(0, 217, 0);
+							background-color: #000;
+						}
+						span.red { color:red; }
+						span.yellow { color: yellow; }
+						</style>
+<pre class="terminal">
+	_   .--------------------------.
+      _|<span class="red">o</span>|_ |    <span class="yellow">Welcome to Yeoman,</span>    |
+       <span class="yellow">|_|</span>  |   <span class="yellow">ladies and gentlemen!</span>  |
+     / \<span class="red">Y</span>/ \ <span class="yellow">o</span>_________________________|
+    ||  :  |//
+    <span class="yellow">o</span>/ <span class="red">---</span> \
+      _\ /_
+
+</pre>
+						<br>
+						<p>Lints, Compiles, Concatenates, Minifies, Compresses, & Generates Cache Manifest</p>
+						<aside class="notes">
+							We know a lot of best practices & tactics for making our websites faster, but many are a pain to apply & keep consistent such as the
+							Yeoman
+							Other options: HTML5 Boilerplate build scripts (Ant, Grunt), mod_pagespeed
+						</aside>
+					</section>
+
+					<section>
+						<h1>Testing</h1>
+						<p data-replace="inc/testing.html"></p>
+					</section>
+
+					<section>
+						<h1>Mobile Testing I</h1>
+						<p><a href="http://mobitest.akamai.com/m/index.cgi" title="Akamai's MobiTest">MobiTest</a> or <a href="http://www.webpagetest.org/mobile" title="WebPageTest Mobile">WebPageTest</a></p>
+						<p data-replace="inc/webpagetest.html"></p>
+						<aside class="notes">
+							Both MobiTest & WebPageTest are web applications that let you put in your URL, choose a device & location, then view the results. They give you not only a load time & page size but also a screenshot &  waterfall chart so you can identify specific bottlenecks.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Mobile Testing II</h1>
+						<ul>
+							<li>Browser Developer Tools</li>
+								<ul>
+									<li><a href="https://chrome.google.com/webstore/detail/ninejjcohidippngpapiilnmkgllmakh?hl=en-US" title="YSlow Chrome Extension">YSlow</a></li>
+									<li><a href="https://chrome.google.com/webstore/detail/ognampngfcbddbfemdapefohjiobgbdl?hl=en-US" title="Speed Tracer Chrome Extension">Speed Tracer</a></li>
+								</ul>
+							<li>Google's <a href="https://developers.google.com/speed/pagespeed/insights">Page Speed Insights</a></li>
+							<li><a href="https://developers.google.com/chrome-developer-tools/docs/remote-debugging" title="Remote Debugging in Chrome">Remote Debugging</a> a la <a href="http://html.adobe.com/edge/inspect/" title="Adobe Edge Inspect">Adobe Edge Inspect</a></li>
+							<li>Steve Souders' <a href="http://stevesouders.com/mobileperf/mobileperfbkm.php" title="All-in-one mobile performance bookmarklet">Mobile Bookmarklet</a></li>
+						</ul>
+						<aside class="notes">
+							Modern browser developer tools, like Firebug & Web Inspector, give you a lot of details in their Network panels which can help you identify slow points. Many slow points will overlap between mobile & desktop so it's OK to use them on a mobile site from a desktop browser.
+							The YSlow & Speed Tracer extensions are a good couple of tools to start with. They examine your sites according to a series of standards & let you know where you could make improvements.
+							Google's Page Speed is a lot like YSlow in that it just evaluates whether your page passes a series of simple tests. Still, it gives you a nice prioritization of waht you should deal with first & what is less essential. It has a "mobile" version but in my experience those results are 90% identical to the desktop.
+							Adobe Shadow is essentially a nice application wrapper around Weinre or Web Inspector Remote which lets you load up a page on your mobile device, then inspect it on another computer. It's a fill-in until remote debugging is available on more devices.
+							Chrome's mobile browser on Android, which doesn't have a fantastic market share, already has remote debugging & remote debugging is supposedly coming to Mobile Safari in iOS 6. I expect many mobile browsers will add this feature soon.
+							Finally, Steve Souders, web performance guru at Google who literally wrote the book on high speed websites, has a mobile super-bookmarklet that gives you access to a series of other bookmarklets. You can run YSlow, Firebug Lite, DOMMonster, CSSess, & other tests from inside your mobile device.
+						</aside>
+					</section>
+
+					<section>
+						<h1>Google Analytics</h1>
+						<h2>Site Speed</h2>
+						<table class="positive-color">
+							<thead>
+								<th>Page</th>
+								<th>Avg. Load Time</th>
+								<th>Pageviews</th>
+								<th>Page Load Sample</th>
+							</thead>
+							<tr>
+								<td>/library/m/</td>
+								<td>1.76s</td>
+								<td>874</td>
+								<td>23</td>
+							</tr>
+							<tr>
+								<td>/library/m/index.html</td>
+								<td>1.01s</td>
+								<td>546</td>
+								<td>6</td>
+							</tr>
+							<tr>
+								<td>/library/m/p/</td>
+								<td>0.00s</td>
+								<td>179</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>/library/m/chat.html</td>
+								<td>2.74s</td>
+								<td>57</td>
+								<td>1</td>
+							</tr>
+						</table>
+						<aside class="notes">
+							Google Analytics has a simple Site Speed mechanism. You just slightly alter the boilerplate Google Analytics code & it tests a subset of visitors to see how long typical performance measures take.
+							The great part about this is it gives you large quantities of longitudinal data with lots of aspects. You can not only see how your site is performing over time & spot possible trends, but can investigate whether specific browsers or platforms are causing you trouble. That can, in turn, give you a specific angle to investigate with further testing.
+						</aside>
+					</section>
+				</section>
+
+				<!-- other topics:
+				LocalStorage: developer.mozilla.org/en-US/docs/DOM/Storage (mention in appcache section)
+				navigator.connection API
+				-->
+
+				<section>
+					<h1>¿Questions?</h1>
+					<br>
+					<h2 class="left-align">Links</h2>
+					<p class="left-align">Me: <a href="http://twitter.com/phette23">@phette23</a></p>
+					<p class="left-align">The presentation: <a href="http://phette.net/prez/speed-feature-performance-mobile-web">phette.net/m</a></p>
+					<p class="left-align">The slide deck: <a href="https://github.com/hakimel/reveal.js" title="HTML presentation framework">reveal.js</a> by Hakim El Hattab</p>
+					<p class="left-align">Resources: <a href="https://www.diigo.com/user/phette23/mobileperf" title="curated links on mobile performance">diigo.com/user/phette23/mobileperf</a></p>
+				</section>
+				<!-- end slides -->
+
+			</div>
+
+			<!-- The navigational controls UI -->
+			<aside class="controls">
+				<a class="left" href="#">&#x25C4;</a>
+				<a class="right" href="#">&#x25BA;</a>
+				<a class="up" href="#">&#x25B2;</a>
+				<a class="down" href="#">&#x25BC;</a>
+			</aside>
+
+			<!-- Presentation progress bar -->
+			<div class="progress"><span></span></div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+
+		<script>
+			head.ready( function() {
+
+				// Fires when a slide with data-state=customevent is activated
+				Reveal.addEventListener( 'customevent', function() {
+					console.log( '"customevent" has fired' );
+				} );
+
+				// Fires each time a new slide is activated
+				Reveal.addEventListener( 'slidechanged', function( event ) {
+					// event.previousSlide, event.currentSlide, event.indexh, event.indexv
+				} );
+
+				// Full list of configuration options available here:
+				// https://github.com/hakimel/reveal.js#configuration
+				Reveal.initialize({
+					mouseWheel: false,
+					progress: true, // REM: turn to false before prez
+					history: true,
+
+					theme: Reveal.getQueryHash().theme || 'default', // default/neon/beige
+					transition: Reveal.getQueryHash().transition || 'default' // default/cube/page/concave/linear(2d)
+				});
+
+				// Load highlight.js for syntax highlighting of code samples
+				head.js( 'lib/js/highlight.js', function() {
+					hljs.initHighlightingOnLoad();
+				} );
+
+				// If jQuery exists then we need to run AJAX Include
+				if ( window.jQuery ) {
+					$( '[data-append],[data-replace],[data-after],[data-before]' ).ajaxInclude();
+				}
+
+			} );
+
+			// Scripts that should be loaded before initializing
+			var scripts = [];
+
+			// If the browser doesn't support classList, load a polyfill
+			if( !document.body.classList ) {
+				head.js( 'lib/js/classList.js' );
+			}
+
+			// Load markdown parser if there are slides defined using markdown
+			if( document.querySelector( '[data-markdown]' ) ) {
+				scripts.push( 'lib/js/showdown.js' );
+				scripts.push( 'lib/js/data-markdown.js' );
+			}
+
+			scripts.push( 'js/reveal.js' );
+
+			// If we're runnning the notes server we need to include some additional JS
+			// TODO Is there a better way to determine if we're running the notes server?
+			if( window.location.host === 'localhost:1947' ) {
+				scripts.push( 'socket.io/socket.io.js' );
+				scripts.push( 'plugin/speakernotes/client.js' );
+			}
+
+			if ( document.querySelector( '[data-append],[data-replace],[data-after],[data-before]' ) ) {
+				// Load jQuery first & then AJAX Include
+				scripts.push( 'lib/js/jquery-1.7.2.min.js');
+				scripts.push( 'lib/js/ajaxInclude.min.js');
+			}
+
+			// Load the scripts and, when completed, initialize reveal.js
+			head.js.apply( null, scripts );
+
+		</script>
+
+	</body>
+</html>
